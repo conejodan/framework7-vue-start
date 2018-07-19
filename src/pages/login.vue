@@ -17,6 +17,11 @@
           <f7-button fill @click="signIn">Iniciar</f7-button>
         </f7-col>
       </f7-row>
+      <f7-row>
+        <f7-col>
+          <f7-button fill @click="location">Location</f7-button>
+        </f7-col>
+      </f7-row>
     </f7-block>
   </f7-page>
 </template>
@@ -39,8 +44,23 @@ export default {
         this.alert=true;
         //this.$f7.dialog.alert('Presiona de nuevo', "Inicio de Sesion");
         return;
-      }
-      
+      } 
+    },
+    location(){
+      console.log("Location")
+      navigator.geolocation.getCurrentPosition((position)=>{
+        this.$f7.dialog.alert('Latitude: '          + position.coords.latitude          + '\n' +
+              'Longitude: '         + position.coords.longitude         + '\n' +
+              'Altitude: '          + position.coords.altitude          + '\n' +
+              'Accuracy: '          + position.coords.accuracy          + '\n' +
+              'Altitude Accuracy: ' + position.coords.altitudeAccuracy  + '\n' +
+              'Heading: '           + position.coords.heading           + '\n' +
+              'Speed: '             + position.coords.speed             + '\n' +
+              'Timestamp: '         + position.timestamp                + '\n', "Inicio de Sesion");
+      }, (error)=>{
+console.log('code: '    + error.code    + '\n' +
+              'message: ' + error.message + '\n');
+      });
     }
   }
 };
