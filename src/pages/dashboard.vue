@@ -1,5 +1,4 @@
 <template>
-    <f7-view>
         <f7-page>
             
     <f7-navbar>
@@ -17,12 +16,10 @@
     <f7-block inner>
       <f7-row>
         <f7-col>
-          <f7-button fill @click="$f7.panel.open();">Abrir Panel</f7-button>
         </f7-col>
       </f7-row>
     </f7-block>
   </f7-page>
-    </f7-view>
 </template>
 <script>
 export default {
@@ -32,6 +29,14 @@ export default {
       title: 'Hello World',
       panel_left: false
     };
+  },
+  mounted(){
+    console.log("Iniciando")
+    setTimeout(()=>{
+      console.log("Enviando")
+      
+    },1000);
+    
   }
 };
 </script>

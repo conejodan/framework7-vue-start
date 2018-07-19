@@ -10,7 +10,7 @@ export default [
   },
   {
     path: '/inicio',
-    component: Formulario
+    component: Dashboard
   },
   {
     path: '/formulario',

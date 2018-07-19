@@ -6,23 +6,21 @@
     <f7-statusbar></f7-statusbar>
 
     <f7-panel left reveal>
-      <f7-view>
-        <f7-page>
           <f7-block-title>Simple List</f7-block-title>
           <f7-list simple-list>
-            <f7-list-item title="Inicio" link="/inicio"></f7-list-item>
             <f7-list-item>
-              <f7-link>Formulario</f7-link>
+              <f7-link href="/inicio" panel-close>Dashboard</f7-link>
             </f7-list-item>
             <f7-list-item>
-              <f7-link>Mapa</f7-link>
+              <f7-link href="/" panel-close>Mapa</f7-link>
             </f7-list-item>
             <f7-list-item>
-              <f7-link @click="$f7.views.main.router.back()" panel-close>Salir</f7-link>
+              <f7-link href="/formulario" panel-close>Formulario</f7-link>
+            </f7-list-item>
+            <f7-list-item>
+              <f7-link href="/" panel-close>Salir</f7-link>
             </f7-list-item>
           </f7-list>
-        </f7-page>
-      </f7-view>
     </f7-panel>
 
     <!-- Main View -->
@@ -36,6 +34,13 @@
 export default {
   name: 'App',
   methods: {
+    algo(){
+      console.log("algo");
+      console.log(this.$f7.router.navigate('/'));
+      this.$f7.router.navigate('/');
+      //this.$f7router.navigate('/')
+    },
+
     handleBackButton() {
       // NOTE: The back button will behave differently depending on circumstance
       // If the side panel is open, close it

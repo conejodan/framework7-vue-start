@@ -1,5 +1,4 @@
 <template>
-    <f7-view>
         <f7-page>
             
     <f7-navbar>
@@ -43,7 +42,6 @@
         </f7-list>
     </f7-block>
   </f7-page>
-    </f7-view>
 </template>
 <script>
 export default {
