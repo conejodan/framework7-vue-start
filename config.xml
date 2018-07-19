@@ -87,6 +87,7 @@
     <preference name="StatusBarStyle" value="default" />
     <preference name="FadeSplashScreenDuration" value="300" />
     <preference name="phonegap-version" value="cli-6.1.0" />
+    <plugin name="cordova-plugin-geolocation" spec="^4.0.1" />
     <engine name="android" spec="^7.1.1" />
     <engine name="ios" spec="^4.1.1" />
 </widget>
