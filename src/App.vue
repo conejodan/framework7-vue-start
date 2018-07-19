@@ -8,7 +8,19 @@
     <f7-panel left reveal>
       <f7-view>
         <f7-page>
-          <f7-block>Left panel content</f7-block>
+          <f7-block-title>Simple List</f7-block-title>
+          <f7-list simple-list>
+            <f7-list-item title="Inicio" link="/inicio"></f7-list-item>
+            <f7-list-item>
+              <f7-link>Formulario</f7-link>
+            </f7-list-item>
+            <f7-list-item>
+              <f7-link>Mapa</f7-link>
+            </f7-list-item>
+            <f7-list-item>
+              <f7-link @click="$f7.views.main.router.back()" panel-close>Salir</f7-link>
+            </f7-list-item>
+          </f7-list>
         </f7-page>
       </f7-view>
     </f7-panel>

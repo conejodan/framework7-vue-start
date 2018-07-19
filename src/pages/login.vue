@@ -32,15 +32,15 @@ export default {
   },
   methods:{
     signIn(){
-
       console.log("Iniciando Sesion")
       console.log("Usuario: "+ this.username)
+      this.$f7router.navigate('/inicio')
       if(!this.alert){
         this.alert=true;
-        this.$f7.dialog.alert('Presiona de nuevo', "Inicio de Sesion");
+        //this.$f7.dialog.alert('Presiona de nuevo', "Inicio de Sesion");
         return;
       }
-      this.$f7router.navigate('/inicio')
+      
     }
   }
 };

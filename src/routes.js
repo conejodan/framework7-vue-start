@@ -1,15 +1,20 @@
-import HomePage from './pages/home.vue';
-import Inicio from './pages/inicio.vue';
+import Login from './pages/login.vue';
+import Dashboard from './pages/dashboard.vue';
+import Formulario from './pages/formulario.vue';
 import NotFoundPage from './pages/not-found.vue';
 
 export default [
   {
     path: '/',
-    component: HomePage
+    component: Login
   },
   {
     path: '/inicio',
-    component: Inicio
+    component: Formulario
+  },
+  {
+    path: '/formulario',
+    component: Formulario
   },
   {
     path: '(.*)',
