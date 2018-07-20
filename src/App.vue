@@ -6,7 +6,13 @@
     <f7-statusbar></f7-statusbar>
 
     <f7-panel left reveal>
-          <f7-block-title>Simple List</f7-block-title>
+          <f7-block-title>Menu</f7-block-title>
+          <f7-list>
+            <f7-list-item title="Inicio" link="/inicio"></f7-list-item>
+            <f7-list-item title="Formulario" link="/formulario"></f7-list-item>
+            <f7-list-item title="Mapa" link="/mapa"></f7-list-item>
+            <f7-list-item title="Salir" link="/"></f7-list-item>
+          </f7-list>
           <f7-list simple-list>
             <f7-list-item>
               <f7-link href="/inicio" panel-close>Dashboard</f7-link>
