@@ -20,7 +20,7 @@
     "postinstall": "npm run copy-fonts"
   },
   "dependencies": {
-    "cordova-android": "^7.1.1",
+    "cordova-android": "^7.0.0",
     "cordova-ios": "^4.1.1",
     "cordova-plugin-geolocation": "^4.0.1",
     "framework7": "^2.0.7",
@@ -110,8 +110,8 @@
   ],
   "cordova": {
     "platforms": [
-      "android",
-      "ios"
+      "ios",
+      "android"
     ],
     "plugins": {
       "cordova-plugin-geolocation": {}
