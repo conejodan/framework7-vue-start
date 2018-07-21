@@ -1,2 +1,5 @@
 /node_modules/
 platforms/android/
+plugins/cordova-plugin-geolocation/
+plugins/cordova-plugin-googlemaps/
+www/static/
