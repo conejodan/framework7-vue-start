@@ -5,6 +5,10 @@
     <author email="tommy@devgeeks.org" href="http://phonegap.com">        Adobe PhoneGap Team    </author>
     <content src="index.html" />
     <access origin="*" />
+    <access origin="*://*.googleapis.com/*" subdomains="true" />
+    <access origin="*://*.gstatic.com/*" subdomains="true" />
+    <access origin="*://*.google.com/*" subdomains="true" />
+    <access origin="*://*.googleusercontent.com/*" subdomains="true" />
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />
     <allow-intent href="tel:*" />
@@ -88,7 +92,8 @@
     <preference name="StatusBarStyle" value="default" />
     <preference name="FadeSplashScreenDuration" value="300" />
     <preference name="phonegap-version" value="cli-6.1.0" />
-    <engine name="ios" spec="^4.1.1" />
     <plugin name="cordova-plugin-geolocation" spec="^4.0.1" />
-    <engine name="android" spec="~7.1.1" />
+    <plugin name="cordova-plugin-whitelist" />
+    <engine name="ios" spec="^4.1.1" />
+    <engine name="android" spec="^7.1.1" />
 </widget>
