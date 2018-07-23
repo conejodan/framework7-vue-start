@@ -21,6 +21,14 @@ import Routes from './routes.js';
 // Import App Component
 import App from './App';
 
+import * as VueGoogleMaps from 'vue2-google-maps'
+
+Vue.use(VueGoogleMaps, {
+    load: {
+        key: 'AIzaSyAcu0OJwesoR8NZDTY_h6Tvhu7SnZ7Poxs',
+    }
+});
+
 // Init F7 Vue Plugin
 Vue.use(Framework7Vue, Framework7);
 

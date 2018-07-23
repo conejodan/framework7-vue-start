@@ -16,6 +16,13 @@
     <f7-block inner>
       <f7-row>
         <f7-col>
+          <GmapMap
+                        ref="googleMap"
+                        :center="mapa.center_map"
+                        :zoom="mapa.zoom_map"
+                        style="width: auto; height: 400px"
+                >
+          </GmapMap>
         </f7-col>
       </f7-row>
     </f7-block>
@@ -26,8 +33,10 @@ export default {
   name: 'Home',
   data() {
     return {
-      title: 'Hello World',
-      panel_left: false
+      mapa:{
+          center_map:{lat:24.083304, lng:-102.339398},
+          zoom_map:5
+      },
     };
   },
   mounted(){
