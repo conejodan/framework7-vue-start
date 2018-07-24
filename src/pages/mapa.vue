@@ -40,21 +40,20 @@
               </f7-col>
             </f7-row>
           </f7-block>
-          <f7-block inner>
-            <f7-row>
-              <f7-col>
-                <f7-button fill @click="calculate">Calcular</f7-button>
-              </f7-col>
-            </f7-row>
-          </f7-block>
           <f7-list simple-list>
             <f7-list-item v-if="puntos.length<=2" :title="'Captura '+ (3 - puntos.length) + ' puntos'"></f7-list-item>
             <template v-if="puntos.length>=3">
-              <f7-list-item :title="'Perimetro: Proximamente'"></f7-list-item>
-              <f7-list-item :title="'Area: Proximamente'"></f7-list-item>
+              <f7-list-item :title="'Perimetro: ' + calcularPerimetro"></f7-list-item>
+              <f7-list-item :title="'Area: ' + calculatArea"></f7-list-item>
             </template>
-            
           </f7-list>
+          <f7-block inner v-if="puntos.length>=3">
+            <f7-row>
+              <f7-col>
+                <f7-button fill @click="borrar">Borrar Puntos</f7-button>
+              </f7-col>
+            </f7-row>
+          </f7-block>
     </f7-block>
   </f7-page>
 </template>
@@ -68,23 +67,61 @@ export default {
           center_map:{lat:24.083304, lng:-102.339398},
           zoom_map:5
       },
-      puntos:[]
+      puntos:[
+        // {lat:18.0361701, lng:-92.9304299},
+        // {lat:17.9851545, lng:-92.9072556},
+        // {lat:17.9856443, lng:-92.964333}
+      ]
     };
   },
   mounted(){
-    console.log("Iniciando Mapa")
+    console.log("Montando Mapa")
     this.getLocation();
     
   },
+  computed:{
+    calcularPerimetro:function(){
+      let perimetro = 0;
+      console.log(this.puntos.length)
+      if(this.puntos.length>1){
+        for (var i = 0; i < this.puntos.length - 1; i++) { 
+          perimetro += this.getDistanceBetween(this.puntos[i],this.puntos[i+1]);
+          console.log(perimetro);
+        }
+      }
+      return perimetro.toFixed(2) + " metros";
+    },
+    calculatArea:function(){
+      let result = 0;
+      if(this.puntos.length>2){
+        let poligon = this.puntos.map((item)=>{
+          return new google.maps.LatLng(item.lat, item.lng)
+        });
+        result = google.maps.geometry.spherical.computeArea(poligon);
+      }
+      return result.toFixed(2) + " metros";
+    }
+  },
   methods:{
+    borrar(){
+      this.puntos = [];
+    },
     calculate(){
       console.log("Calculando");
-      //let distance = google.maps.geometry.spherical.computeDistanceBetween(new google.maps.Point(0, 0), new google.maps.Point(10, 10));
-      console.log(google.maps.geometry.spherical.computeDistanceBetween(new google.maps.LatLng(18.0241824, -92.8988334),new google.maps.LatLng(18.0207575, -92.9025201)) ); //this is not working
+      
+    },
+    getDistanceBetween(first, second){
+        let distance = 0;
+        if(google){
+          distance = google.maps.geometry.spherical.computeDistanceBetween(new google.maps.LatLng(first.lat, first.lng),new google.maps.LatLng(second.lat, second.lng));
+        }
+        return distance;
+      
     },
     saveLocation(){
       console.log("Guardado Location");
-      this.puntos.push(this.mapa.center_map);
+      let {lat, lng} = this.mapa.center_map;
+      this.puntos.push({lat,lng});
     },
     getLocation(){
       navigator.geolocation.getCurrentPosition((position)=>{
