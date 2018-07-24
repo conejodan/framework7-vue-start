@@ -40,6 +40,13 @@
               </f7-col>
             </f7-row>
           </f7-block>
+          <f7-block inner>
+            <f7-row>
+              <f7-col>
+                <f7-button fill @click="calculate">Calcular</f7-button>
+              </f7-col>
+            </f7-row>
+          </f7-block>
           <f7-list simple-list>
             <f7-list-item v-if="puntos.length<=2" :title="'Captura '+ (3 - puntos.length) + ' puntos'"></f7-list-item>
             <template v-if="puntos.length>=3">
@@ -67,8 +74,14 @@ export default {
   mounted(){
     console.log("Iniciando Mapa")
     this.getLocation();
+    
   },
   methods:{
+    calculate(){
+      console.log("Calculando");
+      //let distance = google.maps.geometry.spherical.computeDistanceBetween(new google.maps.Point(0, 0), new google.maps.Point(10, 10));
+      console.log(google.maps.geometry.spherical.computeDistanceBetween(new google.maps.LatLng(18.0241824, -92.8988334),new google.maps.LatLng(18.0207575, -92.9025201)) ); //this is not working
+    },
     saveLocation(){
       console.log("Guardado Location");
       this.puntos.push(this.mapa.center_map);
@@ -79,7 +92,7 @@ export default {
         this.mapa.center_map.lng = position.coords.longitude;
         this.mapa.zoom_map = 18;
       }, (error)=>{
-console.log('code: '    + error.code    + '\n' +
+console.log('Error Current Position: '    + error.code    + '\n' +
               'message: ' + error.message + '\n');
       });
 
@@ -90,7 +103,7 @@ console.log('code: '    + error.code    + '\n' +
         this.mapa.center_map.lng = position.coords.longitude;
         this.mapa.zoom_map = 18;
         }, (error)=>{
-          console.log("Error");
+          console.log("Error Watch");
           console.log(error);
         }, 
         {
