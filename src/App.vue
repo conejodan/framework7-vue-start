@@ -11,21 +11,30 @@
             <f7-list-item title="Inicio" link="/inicio" panel-close></f7-list-item>
             <f7-list-item title="Formulario" link="/formulario" panel-close></f7-list-item>
             <f7-list-item title="Mapa" link="/mapa" panel-close></f7-list-item>
-            <f7-list-item title="Salir" link="/" panel-close></f7-list-item>
+            <f7-list-item title="Salir" @click="logout" panel-close></f7-list-item>
           </f7-list>
     </f7-panel>
 
     <!-- Main View -->
-    <f7-view id="main-view" url="/" main></f7-view>
+    <f7-view id="main-view" url="/inicio" main></f7-view>
 
 
   </div>
 </template>
 
 <script>
+import firebase from 'firebase';
+
 export default {
   name: 'App',
   methods: {
+    logout(){
+      console.log("Logout");
+      firebase.auth().signOut().then(()=>{
+        this.$f7.panel.close();
+        this.$f7.views.main.router.navigate('/')
+      });
+    },
     handleBackButton() {
       // NOTE: The back button will behave differently depending on circumstance
       // If the side panel is open, close it

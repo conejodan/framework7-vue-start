@@ -5,7 +5,7 @@ import Formulario from './pages/formulario.vue';
 import Mapa from './pages/mapa.vue';
 import NotFoundPage from './pages/not-found.vue';
 
-export default [
+let router =  [
   {
     path: '/',
     component: Login
@@ -31,3 +31,5 @@ export default [
     component: NotFoundPage
   }
 ];
+
+export default router;

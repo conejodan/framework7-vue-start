@@ -46,10 +46,12 @@ export default {
       firebase.auth().createUserWithEmailAndPassword(this.email,this.password).then(
         (user)=>{
           console.log("Iniciando Sesion");
+          console.log(user);
           this.$f7router.navigate('/inicio');
         },
         (error)=>{
           console.log("Error en Sesion");
+          console.log(error);
           this.$f7.dialog.alert('Ocurrio un error. ' + error.message, "Error");
         }
       );
