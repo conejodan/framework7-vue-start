@@ -1,4 +1,5 @@
 import Login from './pages/login.vue';
+import Registrar from './pages/registrar.vue';
 import Dashboard from './pages/dashboard.vue';
 import Formulario from './pages/formulario.vue';
 import Mapa from './pages/mapa.vue';
@@ -8,6 +9,10 @@ export default [
   {
     path: '/',
     component: Login
+  },
+  {
+    path: '/registrar',
+    component: Registrar
   },
   {
     path: '/inicio',

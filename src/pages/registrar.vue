@@ -1,6 +1,6 @@
 <template>
   <f7-page>
-    <f7-navbar sliding title="Login"></f7-navbar>
+    <f7-navbar sliding title="Registro"></f7-navbar>
     <f7-block inner>
       <f7-list no-hairlines-md>
         <f7-list-item>
@@ -14,12 +14,12 @@
       </f7-list>
       <f7-row>
         <f7-col>
-          <f7-button fill @click="signIn">Iniciar</f7-button>
+          <f7-button fill @click="register">Registrarse</f7-button>
         </f7-col>
       </f7-row>
       <f7-row>
         <f7-col>
-          <f7-button fill @click="$f7router.navigate('/registrar');">Registrar</f7-button>
+          <f7-button fill @click="$f7router.navigate('/');">Ir al Login</f7-button>
         </f7-col>
       </f7-row>
     </f7-block>
@@ -39,18 +39,18 @@ export default {
     };
   },
   methods:{
-    signIn(){
+    register(){
       console.log("Iniciando Sesion")
-      console.log("Usuario: "+ this.email)
+      console.log("Usuario: "+ this.username)
 
-      firebase.auth().signInWithEmailAndPassword(this.email,this.password).then(
+      firebase.auth().createUserWithEmailAndPassword(this.email,this.password).then(
         (user)=>{
           console.log("Iniciando Sesion");
           this.$f7router.navigate('/inicio');
         },
         (error)=>{
           console.log("Error en Sesion");
-          this.$f7.dialog.alert('Usuario no Registrado', "Inicio de Sesion");
+          this.$f7.dialog.alert('Ocurrio un error. ' + error.message, "Error");
         }
       );
     }
