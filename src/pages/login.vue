@@ -42,17 +42,24 @@ export default {
     signIn(){
       console.log("Iniciando Sesion")
       console.log("Usuario: "+ this.email)
-
+      this.$f7.dialog.preloader("Validando...");
       firebase.auth().signInWithEmailAndPassword(this.email,this.password).then(
         (user)=>{
           console.log("Iniciando Sesion");
           console.log(user);
-          this.$f7router.navigate('/inicio');
+          setTimeout(()=>{
+            this.$f7.dialog.close();
+            this.$f7router.navigate('/inicio');
+          },500);
+          
         },
         (error)=>{
           console.log("Error en Sesion");
           console.log(error);
-          this.$f7.dialog.alert('Usuario no Registrado', "Inicio de Sesion");
+          setTimeout(()=>{
+          this.$f7.dialog.close();
+          this.$f7.dialog.alert(error.message, "Inicio de Sesion");
+          },500);
         }
       );
     }
