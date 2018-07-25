@@ -30,6 +30,18 @@ Vue.use(VueGoogleMaps, {
     }
 });
 
+import firebase from 'firebase';
+
+var config = {
+  apiKey: "AIzaSyChkm5Cly2Jno10oWIZt0_gg1ATeEaIqvE",
+  authDomain: "auth-24699.firebaseapp.com",
+  databaseURL: "https://auth-24699.firebaseio.com",
+  projectId: "auth-24699",
+  storageBucket: "auth-24699.appspot.com",
+  messagingSenderId: "738208412998"
+};
+firebase.initializeApp(config);
+
 // Init F7 Vue Plugin
 Vue.use(Framework7Vue, Framework7);
 
