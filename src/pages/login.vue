@@ -14,7 +14,7 @@
       </f7-list>
       <f7-row>
         <f7-col>
-          <f7-button fill @click="signIn">Iniciar{{cantidad}}{{$store.state.auth}}</f7-button>
+          <f7-button fill @click="signIn">Iniciar</f7-button>
         </f7-col>
       </f7-row>
       <f7-row>
@@ -27,7 +27,7 @@
 </template>
 <script>
 import firebase from 'firebase';
-import {mapState,mapMutations} from 'vuex';
+import {mapState,mapGetters,mapMutations} from 'vuex';
 
 export default {
   name: 'Home',
@@ -39,11 +39,15 @@ export default {
       alert:false
     };
   },
+  mounted(){
+    console.log("Iniciando") 
+  },
   computed:{
     nombre(){
       return "Daniel"
     },
-    ...mapState(['cantidad'])
+    ...mapState(['cantidad']),
+    ...mapGetters(['getUser'])
   },
   
   methods:{
@@ -51,13 +55,11 @@ export default {
     signIn(){
       console.log("Iniciando Sesion")
       console.log("Usuario: "+ this.email);
-      this.saveUser("Daniel")
-      this.$store.state.cantidad++;
-      return;
       this.$f7.dialog.preloader("Validando...");
       firebase.auth().signInWithEmailAndPassword(this.email,this.password).then(
         (user)=>{
           console.log("Iniciando Sesion");
+          this.saveUser(user);
           console.log(user);
           setTimeout(()=>{
             this.$f7.dialog.close();
