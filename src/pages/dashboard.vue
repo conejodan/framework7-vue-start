@@ -22,6 +22,8 @@
   </f7-page>
 </template>
 <script>
+import firebase from 'firebase';
+
 export default {
   name: 'Home',
   data() {
@@ -36,7 +38,8 @@ export default {
       console.log("Enviando")
       
     },1000);
-    
+    let usuario = firebase.auth().currentUser;
+    console.log("Usuario",usuario);
   }
 };
 </script>

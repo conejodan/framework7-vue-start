@@ -40,7 +40,9 @@ export default {
     };
   },
   mounted(){
-    console.log("Iniciando") 
+    console.log("Iniciando Login");
+    let usuario = firebase.auth().currentUser;
+    console.log("Usuario",usuario);
   },
   computed:{
     nombre(){

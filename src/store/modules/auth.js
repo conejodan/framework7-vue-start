@@ -1,5 +1,5 @@
 const auth = {
-    user:"Algodon"
+    user:null
 };
 
 const getters = {
