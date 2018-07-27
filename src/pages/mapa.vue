@@ -144,8 +144,8 @@ console.log('Error Current Position: '    + error.code    + '\n' +
           console.log(error);
         }, 
         {
-          enableHighAccuracy: false,
-          timeout: 5000,
+          enableHighAccuracy: true,
+          timeout: 1000,
           maximumAge: 0
         }
       );

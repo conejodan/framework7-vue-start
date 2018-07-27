@@ -27,7 +27,7 @@
 </template>
 <script>
 import firebase from 'firebase';
-import {mapState,mapGetters,mapMutations} from 'vuex';
+import {mapState,mapGetters,mapMutations, mapActions} from 'vuex';
 
 export default {
   name: 'Home',
@@ -41,8 +41,13 @@ export default {
   },
   mounted(){
     console.log("Iniciando Login");
-    let usuario = firebase.auth().currentUser;
-    console.log("Usuario",usuario);
+    this.getUsuario().then((data)=>{
+      console.log("Datos de usuario", data);
+
+        if(data){
+          this.$f7router.navigate('/inicio');
+        }
+    });
   },
   computed:{
     nombre(){
@@ -53,15 +58,15 @@ export default {
   },
   
   methods:{
+    ...mapActions(['saveUsuario','getUsuario']),
     ...mapMutations(['saveUser']),
     signIn(){
-      console.log("Iniciando Sesion")
-      console.log("Usuario: "+ this.email);
+      console.log("Comprobando sesion de: "+ this.email);
       this.$f7.dialog.preloader("Validando...");
       firebase.auth().signInWithEmailAndPassword(this.email,this.password).then(
         (user)=>{
           console.log("Iniciando Sesion");
-          this.saveUser(user);
+          this.saveUsuario(user.user.uid);
           console.log(user);
           setTimeout(()=>{
             this.$f7.dialog.close();

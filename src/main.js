@@ -31,6 +31,8 @@ Vue.use(VueGoogleMaps, {
 });
 
 import firebase from 'firebase';
+import 'firebase/app';
+import 'firebase/auth';
 
 var config = {
   apiKey: "AIzaSyChkm5Cly2Jno10oWIZt0_gg1ATeEaIqvE",
