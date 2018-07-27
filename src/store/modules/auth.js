@@ -22,19 +22,21 @@ const actions= {
     saveUsuario (context, user) {
         console.log("saveUsuario", user);
         if(user){
-            localStorage.setItem('user',user);
+            localStorage.setItem('ancle_user',user);
         }else{
-            localStorage.removeItem('user');
+            localStorage.removeItem('ancle_user');
         }
         context.commit('saveUser',user);
     },
     getUsuario (context, user) {
         console.log("getUsuario", context.getters.getUser);
+        let result = null;
         if(!firebase.auth().currentUser){
-            let local = localStorage.getItem('user');
-            return local;
+            result = localStorage.getItem('ancle_user');
+        }else{
+            result = firebase.auth().currentUser
         }
-        let result =  firebase.auth().currentUser.uid;
+          
         return result;
     }
   }

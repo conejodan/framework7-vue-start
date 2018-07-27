@@ -43,7 +43,6 @@ export default {
     console.log("Iniciando Login");
     this.getUsuario().then((data)=>{
       console.log("Datos de usuario", data);
-
         if(data){
           this.$f7router.navigate('/inicio');
         }

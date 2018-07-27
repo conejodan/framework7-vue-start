@@ -13,7 +13,7 @@
             
         </f7-nav-right>
     </f7-navbar>
-    <f7-block>
+    <f7-block v-if="ubication">
       <GmapMap
                         ref="googleMap"
                         :center="mapa.center_map"
@@ -50,7 +50,7 @@
           <f7-block inner v-if="puntos.length>=3">
             <f7-row>
               <f7-col>
-                <f7-button fill @click="borrar">Borrar Puntos</f7-button>
+                <f7-button fill @click="borrar" color="red">Borrar Puntos</f7-button>
               </f7-col>
             </f7-row>
           </f7-block>
@@ -67,6 +67,7 @@ export default {
           center_map:{lat:24.083304, lng:-102.339398},
           zoom_map:5
       },
+      ubication:false,
       puntos:[
         // {lat:18.0361701, lng:-92.9304299},
         // {lat:17.9851545, lng:-92.9072556},
@@ -75,7 +76,8 @@ export default {
     };
   },
   mounted(){
-    console.log("Montando Mapa")
+    console.log("Montando Mapa");
+    this.$f7.dialog.preloader("Obteniendo ubicacion...");
     this.getLocation();
     
   },
@@ -123,17 +125,8 @@ export default {
       let {lat, lng} = this.mapa.center_map;
       this.puntos.push({lat,lng});
     },
-    getLocation(){
-      navigator.geolocation.getCurrentPosition((position)=>{
-        this.mapa.center_map.lat = position.coords.latitude;
-        this.mapa.center_map.lng = position.coords.longitude;
-        this.mapa.zoom_map = 18;
-      }, (error)=>{
-console.log('Error Current Position: '    + error.code    + '\n' +
-              'message: ' + error.message + '\n');
-      });
-
-      navigator.geolocation.watchPosition((position)=>{
+    getWatchLocation(){
+        navigator.geolocation.watchPosition((position)=>{
         console.log("Position");
         console.log(position);
         this.mapa.center_map.lat = position.coords.latitude;
@@ -145,11 +138,33 @@ console.log('Error Current Position: '    + error.code    + '\n' +
         }, 
         {
           enableHighAccuracy: true,
-          timeout: 1000,
+          timeout: 2000,
           maximumAge: 0
         }
       );
-
+    },
+    getLocation(){
+      console.log("Obteniendo ubicacion");
+      navigator.geolocation.getCurrentPosition((position)=>{
+        this.ubication = true;
+        this.$f7.dialog.close();
+        this.mapa.center_map.lat = position.coords.latitude;
+        this.mapa.center_map.lng = position.coords.longitude;
+        this.mapa.zoom_map = 18;
+        this.getWatchLocation();
+      }, (error)=>{
+            console.log('Error Current Position: '    + error.code    + '\n' +
+              'message: ' + error.message + '\n');
+              if(error.code == 3){
+            setTimeout(()=>{
+              this.getLocation();
+            },4000);
+          }
+      },{
+          enableHighAccuracy: true,
+          timeout: 5000,
+          maximumAge: 0
+        });
     }
   }
 };

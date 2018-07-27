@@ -23,6 +23,7 @@
 </template>
 <script>
 import firebase from 'firebase';
+import {mapActions} from 'vuex';
 
 export default {
   name: 'Home',
@@ -39,7 +40,16 @@ export default {
       
     },1000);
     let usuario = firebase.auth().currentUser;
-    console.log("Usuario",usuario);
+    console.log("Dashboard Usuario",usuario);
+    firebase.auth().onAuthStateChanged((user)=>{
+      if(user){
+        console.log("onAuthStateChange", user)
+        this.saveUsuario(user.uid)
+      }
+    });
+  },
+  methods:{
+    ...mapActions(['saveUsuario']),
   }
 };
 </script>
