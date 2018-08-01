@@ -1,7 +1,7 @@
 import Login from './pages/login.vue';
 import Registrar from './pages/registrar.vue';
 import Dashboard from './pages/dashboard.vue';
-import Formulario from './pages/formulario.vue';
+import Perfil from './pages/perfil.vue';
 import Mapa from './pages/mapa.vue';
 import NotFoundPage from './pages/not-found.vue';
 
@@ -20,7 +20,7 @@ let router =  [
   },
   {
     path: '/formulario',
-    component: Formulario
+    component: Perfil
   },
   {
     path: '/mapa',

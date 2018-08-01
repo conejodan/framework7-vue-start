@@ -31,9 +31,7 @@ Vue.use(VueGoogleMaps, {
 });
 
 import firebase from 'firebase';
-import 'firebase/app';
-import 'firebase/auth';
-
+console.log("Iniciando Firebase")
 var config = {
   apiKey: "AIzaSyChkm5Cly2Jno10oWIZt0_gg1ATeEaIqvE",
   authDomain: "auth-24699.firebaseapp.com",
@@ -43,6 +41,7 @@ var config = {
   messagingSenderId: "738208412998"
 };
 firebase.initializeApp(config);
+console.log("Firebase Iniciado")
 
 // Init F7 Vue Plugin
 Vue.use(Framework7Vue, Framework7);
