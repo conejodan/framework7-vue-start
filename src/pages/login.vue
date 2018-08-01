@@ -26,7 +26,7 @@
   </f7-page>
 </template>
 <script>
-//import firebase from 'firebase';
+import firebase from 'firebase';
 import {mapState,mapGetters,mapMutations, mapActions} from 'vuex';
 
 export default {

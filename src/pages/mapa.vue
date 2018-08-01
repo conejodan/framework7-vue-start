@@ -58,11 +58,14 @@
   </f7-page>
 </template>
 <script>
+import firebase from 'firebase';
+
 export default {
   name: 'Home',
   data() {
     return {
       height:window.innerHeight / 3,
+      db:null,
       mapa:{
           center_map:{lat:24.083304, lng:-102.339398},
           zoom_map:5
@@ -79,7 +82,9 @@ export default {
     console.log("Montando Mapa");
     this.$f7.dialog.preloader("Obteniendo ubicacion...");
     this.getLocation();
-    
+    this.db= firebase.database();
+    let usuario = firebase.auth().currentUser;
+    console.log("Perfil Usuario", usuario);
   },
   computed:{
     calcularPerimetro:function(){
@@ -105,8 +110,27 @@ export default {
     }
   },
   methods:{
+    loadPuntos(){
+      
+    },
+    cargarPuntos(puntos){
+      console.log("CargandoPuntos->", puntos)
+      if(puntos){
+        this.puntos = [];
+        console.log("Tiene puntos")
+        for(let key in puntos){
+          let {lat, lng} = puntos[key];
+          this.puntos.push({lat,lng});
+        }
+      }
+      //this.puntos = puntos;
+    },
     borrar(){
       this.puntos = [];
+      let usuario = firebase.auth().currentUser;
+      this.db.ref("/"+ usuario.uid + "/puntos").remove().then(()=>{
+              console.log("Enviado")
+          })
     },
     calculate(){
       console.log("Calculando");
@@ -123,7 +147,11 @@ export default {
     saveLocation(){
       console.log("Guardado Location");
       let {lat, lng} = this.mapa.center_map;
-      this.puntos.push({lat,lng});
+      //this.puntos.push({lat,lng});
+      let usuario = firebase.auth().currentUser;
+      this.db.ref("/"+ usuario.uid + "/puntos").push({lat,lng}).then(()=>{
+              console.log("Enviado")
+          })
     },
     getWatchLocation(){
         navigator.geolocation.watchPosition((position)=>{
@@ -138,7 +166,7 @@ export default {
         }, 
         {
           enableHighAccuracy: true,
-          timeout: 2000,
+          timeout: 3000,
           maximumAge: 0
         }
       );
@@ -148,6 +176,8 @@ export default {
       navigator.geolocation.getCurrentPosition((position)=>{
         this.ubication = true;
         this.$f7.dialog.close();
+        let usuario = firebase.auth().currentUser;
+        this.db.ref("/"+ usuario.uid+ "/puntos").on('value', snapshot => this.cargarPuntos(snapshot.val()));
         this.mapa.center_map.lat = position.coords.latitude;
         this.mapa.center_map.lng = position.coords.longitude;
         this.mapa.zoom_map = 18;
@@ -158,11 +188,11 @@ export default {
               if(error.code == 3){
             setTimeout(()=>{
               this.getLocation();
-            },4000);
+            },5000);
           }
       },{
           enableHighAccuracy: true,
-          timeout: 5000,
+          timeout: 10000,
           maximumAge: 0
         });
     }

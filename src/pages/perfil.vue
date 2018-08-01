@@ -57,7 +57,8 @@ export default {
       form:{
           nombre:"",
           apellidos:"",
-          telefono:""
+          telefono:"",
+          email:"",
       },
       db:null
     };
@@ -66,17 +67,20 @@ export default {
       console.log("Iniciando Perfil");
       this.db= firebase.database();
       let usuario = firebase.auth().currentUser;
-        this.db.ref("/perfil/"+ usuario.uid).on('value', snapshot => this.cargarPerfil(snapshot.val()));
+      console.log("Perfil Usuario", usuario);
+        this.db.ref("/"+ usuario.uid+ "/perfil").on('value', snapshot => this.cargarPerfil(snapshot.val()));
   },
   methods:{
       cargarPerfil(perfil){
           console.log("Perfil", perfil);
-          let {nombre, apellidos, telefono} = perfil;
-          this.form = {nombre, apellidos, telefono};
+          let {nombre, apellidos, telefono, email} = perfil;
+          this.form = {nombre, apellidos, telefono, email};
       },
       sendForm(){
           let usuario = firebase.auth().currentUser;
-          this.db.ref("/perfil/"+ usuario.uid).set(this.form).then(()=>{
+          console.log(usuario);
+          this.form.email = usuario.email;
+          this.db.ref("/"+ usuario.uid + "/perfil").set(this.form).then(()=>{
               console.log("Enviado")
           })
           
