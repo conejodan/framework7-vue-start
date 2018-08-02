@@ -47,6 +47,7 @@
             <template v-if="puntos.length>=3">
               <f7-list-item :title="'Perimetro: ' + calcularPerimetro"></f7-list-item>
               <f7-list-item :title="'Area: ' + calculatArea"></f7-list-item>
+              <f7-list-item :title="'Puntos: ' + puntos.length"></f7-list-item>
             </template>
           </f7-list>
           <f7-block inner v-if="puntos.length>0">
@@ -57,9 +58,9 @@
             </f7-row>
           </f7-block>
     </f7-block>
-    <f7-fab position="right-bottom" slot="fixed" v-if="puntos.length>=3">
-      <f7-icon f7="add" md="material:add"></f7-icon>
-      <f7-icon f7="arrow_down" md="material:close"></f7-icon>
+    <f7-fab position="right-bottom" slot="fixed" v-if="puntos.length>1">
+      <f7-icon f7="add"></f7-icon>
+      <f7-icon f7="arrow_down" ></f7-icon>
       <f7-fab-buttons position="top">
         <f7-fab-button label="Ver puntos" fab-close color="orange" @click="popupOpened = true">
           <f7-icon f7="eye" md="material:close"></f7-icon>
@@ -164,7 +165,7 @@ export default {
           for(let i = 0; i< this.puntos.length-1;i++){
             let distancia = this.getDistanceBetween(this.puntos[i],this.puntos[i+1]).toFixed(2)
             this.puntos_detalle.push("Trazo " + (i+1) + ": " + distancia + " metros")
-            if(this.puntos.length>2 && ((i+1) == this.puntos.length)){
+            if(this.puntos.length>2 && ((i+2) == this.puntos.length)){
               let distancia = this.getDistanceBetween(this.puntos[i+1],this.puntos[0])
               this.puntos_detalle.push("Trazo " + (i+2) + ": " + distancia + " metros")
             }
@@ -213,8 +214,7 @@ export default {
     },
     getWatchLocation(){
         navigator.geolocation.watchPosition((position)=>{
-        console.log("Position");
-        console.log(position);
+        console.log("Position",position);
         this.mapa.center_map.lat = position.coords.latitude;
         this.mapa.center_map.lng = position.coords.longitude;
         this.mapa.zoom_map = 18;
@@ -225,7 +225,7 @@ export default {
         {
           enableHighAccuracy: true,
           timeout: 3000,
-          maximumAge: 0
+          maximumAge: 500
         }
       );
     },
