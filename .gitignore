@@ -4,3 +4,5 @@ plugins/cordova-plugin-geolocation/
 plugins/cordova-plugin-googlemaps/
 plugins/cordova-plugin-whitelist/
 www/static/
+www/
+plugins/
