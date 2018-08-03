@@ -163,7 +163,7 @@ export default {
         }
         if(this.puntos.length>1){
           for(let i = 0; i< this.puntos.length-1;i++){
-            let distancia = this.getDistanceBetween(this.puntos[i],this.puntos[i+1]).toFixed(2)
+            let distancia = this.getDistanceBetween(this.puntos[i],this.puntos[i+1])
             this.puntos_detalle.push("Trazo " + (i+1) + ": " + distancia + " metros")
             if(this.puntos.length>2 && ((i+2) == this.puntos.length)){
               let distancia = this.getDistanceBetween(this.puntos[i+1],this.puntos[0])
@@ -175,11 +175,15 @@ export default {
       //this.puntos = puntos;
     },
     borrar(){
-      this.puntos = [];
+      this.$f7.dialog.confirm('Quieres eliminar todos los puntos?', ()=> {
+        this.$f7.dialog.alert('Puntos Eliminados!');
+        this.puntos = [];
       let usuario = firebase.auth().currentUser;
       this.db.ref("/"+ usuario.uid + "/puntos").remove().then(()=>{
               console.log("Enviado")
           })
+      });
+      
     },
     borrar_ultimo_punto(){
       let last_key= "";
@@ -200,8 +204,7 @@ export default {
         if(google){
           distance = google.maps.geometry.spherical.computeDistanceBetween(new google.maps.LatLng(first.lat, first.lng),new google.maps.LatLng(second.lat, second.lng));
         }
-        return distance;
-      
+        return distance.toFixed(2);
     },
     saveLocation(){
       console.log("Guardado Location");
