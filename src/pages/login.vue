@@ -25,17 +25,6 @@
           <f7-button small fill @click="$f7router.navigate('/registrar');">Registrar</f7-button>
         </f7-col>
       </f7-row>
-      <f7-row tag="p">
-        <f7-col style="text-align: center;">
-          --- O ---
-        </f7-col>
-      </f7-row>
-      <f7-row tag="p">
-        <f7-col>
-
-          <f7-button fill @click="signInGoogle">Google</f7-button>
-        </f7-col>
-      </f7-row>
     </f7-block>
     <f7-popup class="demo-popup" :opened="popupOpened" @popup:closed="popupOpened = false">
       <f7-page>
@@ -119,37 +108,6 @@ export default {
           },500);
         }
       );
-    },
-    signInGoogle(){
-      console.log("Iniciando con google");
-      var provider = new firebase.auth.GoogleAuthProvider();
-      firebase.auth().signInWithRedirect(provider);
-      //add the code below to your previous lines
-      provider.addScope('profile');
-      provider.addScope('https://www.googleapis.com/auth/drive');
-      firebase.auth().getRedirectResult().then((authData)=> {
-          console.log(authData);
-          this.$f7router.navigate('/inicio');
-      }).catch(function(error) {
-          console.log(error);
-      });
-      // firebase.auth().signInWithPopup(provider).then((result) =>{
-      //   // This gives you a Google Access Token. You can use it to access the Google API.
-      //   console.log("Si paso no mames")
-      //   console.log(result)
-      //   this.$f7router.navigate('/inicio');
-      //   // ...
-      // }).catch(function(error) {
-      //   // Handle Errors here.
-      //   console.log("No paso")
-      //   console.log(error.code)
-      //   console.log(error.message)
-      //   // The email of the user's account used.
-      //   var email = error.email;
-      //   // The firebase.auth.AuthCredential type that was used.
-      //   var credential = error.credential;
-      //   // ...
-      // });
     },
     forgetPassword(){
       console.log("Olvide Contraseña");
