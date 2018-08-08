@@ -19,21 +19,18 @@
                 <f7-label>Nombre</f7-label>
                 <f7-input type="text" placeholder="Tu Nombre" 
                 :value="form.nombre" @input="form.nombre = $event.target.value"
-                @keypress.enter="$event.target.nextElementSibling.focus()"
                 clear-button ></f7-input>
             </f7-list-item>
             <f7-list-item>
                 <f7-label>Apellidos</f7-label>
                 <f7-input type="text" placeholder="Tus apellidos" 
                 :value="form.apellidos" @input="form.apellidos = $event.target.value"
-                @keypress.13="alert('User pressed enter key.')"
                 clear-button></f7-input>
             </f7-list-item>
             <f7-list-item>
                 <f7-label>Telefono</f7-label>
-                <f7-input type="text" placeholder="Tu telefono" 
+                <f7-input type="tel" placeholder="Tu telefono" 
                 :value="form.telefono" @input="form.telefono = $event.target.value"
-                @keypress.13="alert('User pressed enter key.')"
                 clear-button></f7-input>
             </f7-list-item>
         </f7-list>

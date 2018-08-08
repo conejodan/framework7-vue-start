@@ -5,7 +5,7 @@
       <f7-list no-hairlines-md form>
         <f7-list-item>
           <f7-label>Usuario</f7-label>
-          <f7-input type="text" :value="email" @input="email = $event.target.value" placeholder="Coloca tu Usuario" clear-button></f7-input>
+          <f7-input type="email" :value="email" @input="email = $event.target.value" placeholder="Coloca tu Usuario" clear-button></f7-input>
         </f7-list-item>
         <f7-list-item>
           <f7-label>Contraseña</f7-label>
@@ -37,7 +37,7 @@
           <f7-list>
               <f7-list-item>
                 <f7-label>Usuario</f7-label>
-                <f7-input type="text" :value="email" @input="email = $event.target.value" placeholder="Coloca tu Usuario" clear-button></f7-input>
+                <f7-input type="email" :value="email" @input="email = $event.target.value" placeholder="Coloca tu Usuario" clear-button></f7-input>
               </f7-list-item>
           </f7-list>
         </f7-block>

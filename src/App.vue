@@ -10,6 +10,7 @@
           <f7-list>
             <f7-list-item title="Inicio" link="/inicio" panel-close></f7-list-item>
             <f7-list-item title="Perfil" link="/formulario" panel-close></f7-list-item>
+            <f7-list-item title="Entrevista" link="/entrevista" panel-close></f7-list-item>
             <f7-list-item title="Mapa" link="/mapa" panel-close></f7-list-item>
             <f7-list-item title="Salir" @click="logout" panel-close></f7-list-item>
           </f7-list>
