@@ -6,6 +6,10 @@ import Entrevista from './pages/Entrevista/entrevista.vue';
 import EntrevistaDomicilio from './pages/Entrevista/domicilio.vue';
 import EntrevistaServLote from './pages/Entrevista/servicioslote.vue';
 import EntrevistaServVivienda from './pages/Entrevista/serviciosvivienda.vue';
+import EntrevistaFactibilidad from './pages/Entrevista/factibilidad.vue';
+import EntrevistaSeguridadEstructural from './pages/Entrevista/seguridadestructural.vue';
+import EntrevistaFamilia from './pages/Entrevista/familia.vue';
+import EntrevistaEspacios from './pages/Entrevista/espacios.vue';
 import Mapa from './pages/mapa.vue';
 import NotFoundPage from './pages/not-found.vue';
 
@@ -41,6 +45,22 @@ let router =  [
   {
     path: '/entrevista/serv_vivienda',
     component: EntrevistaServVivienda
+  },
+  {
+    path: '/entrevista/factibilidad',
+    component: EntrevistaFactibilidad
+  },
+  {
+    path: '/entrevista/seguridad_estructural',
+    component: EntrevistaSeguridadEstructural
+  },
+  {
+    path: '/entrevista/familia',
+    component: EntrevistaFamilia
+  },
+  {
+    path: '/entrevista/espacios',
+    component: EntrevistaEspacios
   },
   {
     path: '/mapa',
