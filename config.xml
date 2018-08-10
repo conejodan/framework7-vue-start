@@ -94,6 +94,7 @@
     <preference name="phonegap-version" value="cli-6.1.0" />
     <plugin name="cordova-plugin-geolocation" spec="^4.0.1" />
     <plugin name="cordova-plugin-whitelist" />
+    <plugin name="cordova-plugin-admob-simple" spec="^3.3.4" />
     <engine name="ios" spec="^4.5.5" />
     <engine name="android" spec="^7.1.1" />
 </widget>

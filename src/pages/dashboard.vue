@@ -35,10 +35,6 @@ export default {
   },
   mounted(){
     console.log("Iniciando")
-    setTimeout(()=>{
-      console.log("Enviando")
-      
-    },1000);
     let usuario = firebase.auth().currentUser;
     console.log("Dashboard Usuario",usuario);
     firebase.auth().onAuthStateChanged((user)=>{
@@ -50,6 +46,7 @@ export default {
   },
   methods:{
     ...mapActions(['saveUsuario']),
+    
   }
 };
 </script>
