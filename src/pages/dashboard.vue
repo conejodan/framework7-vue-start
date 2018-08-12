@@ -14,6 +14,26 @@
         </f7-nav-right>
     </f7-navbar>
     <f7-block inner>
+      <f7-row tag="p">
+        <f7-col>
+          <f7-button fill @click="showBanner">ShowBanner</f7-button>
+        </f7-col>
+      </f7-row>
+      <f7-row tag="p">
+        <f7-col>
+          <f7-button fill @click="requestInterstitial">requestInterstitial</f7-button>
+        </f7-col>
+      </f7-row>
+      <f7-row tag="p">
+        <f7-col>
+          <f7-button fill @click="showInterstitial">showInterstitial</f7-button>
+        </f7-col>
+      </f7-row>
+      <f7-row tag="p">
+        <f7-col>
+          <f7-button fill @click="showAd">ShowAdmob</f7-button>
+        </f7-col>
+      </f7-row>
       <f7-row>
         <f7-col>
         </f7-col>
@@ -46,7 +66,23 @@ export default {
   },
   methods:{
     ...mapActions(['saveUsuario']),
-    
+    showBanner(){
+      window.plugins.AdMob.createBannerView();
+    },
+    createInterstitial(){
+      window.plugins.AdMob.createInterstitialView();
+    },
+    requestInterstitial(){
+      window.plugins.AdMob.requestInterstitialAd();
+    },
+    showInterstitial(){
+      window.plugins.AdMob.showInterstitialAd();
+    },
+    showAd(){
+      this.createInterstitial()
+      this.requestInterstitial()
+      this.showInterstitial()
+    },
   }
 };
 </script>

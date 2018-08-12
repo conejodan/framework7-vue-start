@@ -183,7 +183,6 @@ export default {
               console.log("Enviado")
           })
       });
-      
     },
     borrar_ultimo_punto(){
       let last_key= "";

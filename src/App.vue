@@ -40,6 +40,7 @@ export default {
       });
     },
     handleBackButton() {
+      console.log("handleBackButton")
       // NOTE: The back button will behave differently depending on circumstance
       // If the side panel is open, close it
       if (document.querySelector('.panel-left.panel-active')) {
@@ -56,7 +57,10 @@ export default {
         return this.$f7.views.main.router.back();
       }
       // Default to closing the app
-      return window.navigator.app.exitApp();
+      this.$f7.dialog.confirm('Quieres salir de la aplicacion?', ()=> {
+        return window.navigator.app.exitApp();
+      });
+      
     },
     initAd(){
       if ( window.plugins && window.plugins.AdMob ) {
@@ -87,21 +91,45 @@ export default {
         window.plugins.AdMob.createInterstitialView();  //get the interstitials ready to be shown
         window.plugins.AdMob.requestInterstitialAd();
 
-    } else {
-        //alert( 'admob plugin not ready' );
-    }
+      } else {
+          //alert( 'admob plugin not ready' );
+      }
+    },
+    onResume(){
+      console.log("onResume");
+      setTimeout(()=>{
+        window.plugins.AdMob.createBannerView();
+      },500);
     },
     registerAdEvents(){
-      document.addEventListener('onReceiveAd', function(){});
-      document.addEventListener('onFailedToReceiveAd', function(data){});
-      document.addEventListener('onPresentAd', function(){});
-      document.addEventListener('onDismissAd', function(){ });
-      document.addEventListener('onLeaveToAd', function(){ });
-      document.addEventListener('onReceiveInterstitialAd', function(){ });
-      document.addEventListener('onPresentInterstitialAd', function(){ });
+      document.addEventListener("resume", this.onResume);
+
+      document.addEventListener('onReceiveAd', function(){
+        console.log("onReceiveAd")
+      });
+      document.addEventListener('onFailedToReceiveAd', function(data){
+        console.log("onFailedToReceiveAd")
+      });
+      document.addEventListener('onPresentAd', function(){
+        console.log("onPresentAd")
+      });
+      document.addEventListener('onDismissAd', function(){
+        console.log("onDismissAd")
+       });
+      document.addEventListener('onLeaveToAd', function(){
+        console.log("onLeaveToAd")
+       });
+      document.addEventListener('onReceiveInterstitialAd', function(){
+        console.log("onReceiveInterstitialAd")
+       });
+      document.addEventListener('onPresentInterstitialAd', function(){
+        console.log("onPresentInterstitialAd")
+       });
       document.addEventListener('onDismissInterstitialAd', function(){
-          window.plugins.AdMob.createInterstitialView();          //REMOVE THESE 2 LINES IF USING AUTOSHOW
-          window.plugins.AdMob.requestInterstitialAd();           //get the next one ready only after the current one is closed
+        console.log("onDismissInterstitialAd")
+        //window.plugins.AdMob.createBannerView();
+          //window.plugins.AdMob.createInterstitialView();          //REMOVE THESE 2 LINES IF USING AUTOSHOW
+          //window.plugins.AdMob.requestInterstitialAd();           //get the next one ready only after the current one is closed
       });
     },
     showBannerFunc(){
@@ -116,10 +144,12 @@ export default {
       console.log("Cargando banners")
       this.initAd();
       this.showBannerFunc();
-      setInterval(()=>{
-        this.showInterstitialFunc();
-      },10000);
-    },2500);
+      this.showInterstitialFunc();
+      // setInterval(()=>{
+      //   window.plugins.AdMob.createInterstitialView();          //REMOVE THESE 2 LINES IF USING AUTOSHOW
+      //   window.plugins.AdMob.requestInterstitialAd();
+      // },10000);
+    },500);
   },
   computed: {
     isiOS() {

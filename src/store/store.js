@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import auth from './modules/auth';
+import admob from './modules/admob';
 
 Vue.use(Vuex);
 
@@ -29,6 +30,7 @@ export const store = new Vuex.Store({
     }
   },
   modules:{
-      auth
+      auth,
+      admob
   }
 });
