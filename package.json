@@ -20,11 +20,12 @@
     "postinstall": "npm run copy-fonts"
   },
   "dependencies": {
-    "cordova-admob-sdklibs": "^2.1.6",
+    "cordova-admob-sdk": "^0.17.0",
     "cordova-android": "^7.1.1",
     "cordova-ios": "^4.5.5",
-    "cordova-plugin-admob-simple": "^3.3.4",
+    "cordova-plugin-admob-free": "^0.17.4",
     "cordova-plugin-geolocation": "^4.0.1",
+    "cordova-promise-polyfill": "0.0.2",
     "firebase": "^5.3.0",
     "framework7": "^2.3.1",
     "framework7-icons": "^0.8.9",
@@ -121,7 +122,7 @@
     "plugins": {
       "cordova-plugin-geolocation": {},
       "cordova-plugin-whitelist": {},
-      "cordova-plugin-admob-simple": {}
+      "cordova-plugin-admob-free": {}
     }
   }
 }

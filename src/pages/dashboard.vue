@@ -16,22 +16,32 @@
     <f7-block inner>
       <f7-row tag="p">
         <f7-col>
-          <f7-button fill @click="showBanner">ShowBanner</f7-button>
+          <f7-button fill @click="prepareBanner">Prepare Banner</f7-button>
         </f7-col>
       </f7-row>
       <f7-row tag="p">
         <f7-col>
-          <f7-button fill @click="requestInterstitial">requestInterstitial</f7-button>
+          <f7-button fill @click="showBanner">Show Banner</f7-button>
         </f7-col>
       </f7-row>
       <f7-row tag="p">
         <f7-col>
-          <f7-button fill @click="showInterstitial">showInterstitial</f7-button>
+          <f7-button fill @click="prepareInterstitial">Prepare Interstitial</f7-button>
         </f7-col>
       </f7-row>
       <f7-row tag="p">
         <f7-col>
-          <f7-button fill @click="showAd">ShowAdmob</f7-button>
+          <f7-button fill @click="showInterstitial">Show Insterstitial</f7-button>
+        </f7-col>
+      </f7-row>
+      <f7-row tag="p">
+        <f7-col>
+          <f7-button fill @click="prepareRewarded">Prepare Rewarded</f7-button>
+        </f7-col>
+      </f7-row>
+      <f7-row tag="p">
+        <f7-col>
+          <f7-button fill @click="showReward">Show Rewarded</f7-button>
         </f7-col>
       </f7-row>
       <f7-row>
@@ -44,7 +54,6 @@
 <script>
 import firebase from 'firebase';
 import {mapActions} from 'vuex';
-
 export default {
   name: 'Home',
   data() {
@@ -66,22 +75,31 @@ export default {
   },
   methods:{
     ...mapActions(['saveUsuario']),
+    prepareBanner(){
+      console.log("Preparando Banner");
+      admob.banner.prepare();
+    },
     showBanner(){
-      window.plugins.AdMob.createBannerView();
+      console.log("Mostrando Banner");
+      admob.banner.show();
     },
-    createInterstitial(){
-      window.plugins.AdMob.createInterstitialView();
-    },
-    requestInterstitial(){
-      window.plugins.AdMob.requestInterstitialAd();
+    prepareInterstitial(){
+      console.log("Preparando Insterstitial");
+      admob.interstitial.prepare();
     },
     showInterstitial(){
-      window.plugins.AdMob.showInterstitialAd();
+      console.log("Mostrando Interstitial");
+      admob.interstitial.show()
+    },
+    prepareRewarded(){
+      console.log("Preparando Insterstitial");
+      admob.rewardvideo.prepare()
+    },
+    showReward(){
+      console.log("Mostrando Reward");
+      admob.rewardvideo.show()
     },
     showAd(){
-      this.createInterstitial()
-      this.requestInterstitial()
-      this.showInterstitial()
     },
   }
 };
