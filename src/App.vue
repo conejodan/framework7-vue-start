@@ -62,93 +62,60 @@ export default {
       });
       
     },
-    initAd(){
-      if ( window.plugins && window.plugins.AdMob ) {
-        var ad_units = {
-            ios : {
-                banner: 'ca-app-pub-xxxxxxxxxxx/xxxxxxxxxxx',       //PUT ADMOB ADCODE HERE
-                interstitial: 'ca-app-pub-xxxxxxxxxxx/xxxxxxxxxxx'  //PUT ADMOB ADCODE HERE
-            },
-            android : {
-                banner: 'ca-app-pub-6894711411071006/2975463962',       //PUT ADMOB ADCODE HERE
-                interstitial: 'ca-app-pub-6894711411071006/1673467493'  //PUT ADMOB ADCODE HERE
-            }
-        };
-        var admobid = ( /(android)/i.test(navigator.userAgent) ) ? ad_units.android : ad_units.ios;
-
-        window.plugins.AdMob.setOptions( {
-            publisherId: admobid.banner,
-            interstitialAdId: admobid.interstitial,
-            adSize: window.plugins.AdMob.AD_SIZE.SMART_BANNER,  //use SMART_BANNER, BANNER, LARGE_BANNER, IAB_MRECT, IAB_BANNER, IAB_LEADERBOARD
-            bannerAtTop: false, // set to true, to put banner at top
-            overlap: true, // banner will overlap webview
-            offsetTopBar: false, // set to true to avoid ios7 status bar overlap
-            isTesting: false, // receiving test ad
-            autoShow: false // auto show interstitial ad when loaded
-        });
-
-        this.registerAdEvents();
-        window.plugins.AdMob.createInterstitialView();  //get the interstitials ready to be shown
-        window.plugins.AdMob.requestInterstitialAd();
-
-      } else {
-          //alert( 'admob plugin not ready' );
-      }
-    },
     onResume(){
       console.log("onResume");
       setTimeout(()=>{
-        window.plugins.AdMob.createBannerView();
-      },500);
+       //this.initAds(); 
+      },2500);
     },
-    registerAdEvents(){
-      document.addEventListener("resume", this.onResume);
+    initAds(){
+      var admobid = {}
+      if (/(android)/i.test(navigator.userAgent)) {  // for android & amazon-fireos
+        admobid = {
+          banner: 'ca-app-pub-3940256099942544/6300978111',
+          interstitial: 'ca-app-pub-3940256099942544/1033173712',
+          rewarded: 'ca-app-pub-6894711411071006/2708277172',
+        }
+      } else if (/(ipod|iphone|ipad)/i.test(navigator.userAgent)) {  // for ios
+        admobid = {
+          banner: 'ca-app-pub-3940256099942544/2934735716',
+          interstitial: 'ca-app-pub-3940256099942544/4411468910',
+          rewarded: 'ca-app-pub-6894711411071006/2708277172',
+        }
+      }
 
-      document.addEventListener('onReceiveAd', function(){
-        console.log("onReceiveAd")
-      });
-      document.addEventListener('onFailedToReceiveAd', function(data){
-        console.log("onFailedToReceiveAd")
-      });
-      document.addEventListener('onPresentAd', function(){
-        console.log("onPresentAd")
-      });
-      document.addEventListener('onDismissAd', function(){
-        console.log("onDismissAd")
-       });
-      document.addEventListener('onLeaveToAd', function(){
-        console.log("onLeaveToAd")
-       });
-      document.addEventListener('onReceiveInterstitialAd', function(){
-        console.log("onReceiveInterstitialAd")
-       });
-      document.addEventListener('onPresentInterstitialAd', function(){
-        console.log("onPresentInterstitialAd")
-       });
-      document.addEventListener('onDismissInterstitialAd', function(){
-        console.log("onDismissInterstitialAd")
-        //window.plugins.AdMob.createBannerView();
-          //window.plugins.AdMob.createInterstitialView();          //REMOVE THESE 2 LINES IF USING AUTOSHOW
-          //window.plugins.AdMob.requestInterstitialAd();           //get the next one ready only after the current one is closed
-      });
+      admob.banner.config({
+        id: admobid.banner,
+        isTesting: true,
+        autoShow: true,
+      })
+      admob.banner.prepare();
+      //admob.banner.show();
+
+      admob.interstitial.config({
+        id: admobid.interstitial,
+        isTesting: true,
+        autoShow: false,
+      })
+      admob.interstitial.prepare()
+      //admob.interstitial.show()
+
+      admob.rewardvideo.config({
+        id: admobid.rewarded,
+        isTesting: true,
+        autoShow: true,
+      })
+      admob.rewardvideo.prepare()
     },
-    showBannerFunc(){
-      window.plugins.AdMob.createBannerView();
-    },
-    showInterstitialFunc(){
-      window.plugins.AdMob.showInterstitialAd();
+    showInsterstitial(){
+      console.log("showInsteerstitial")
+      admob.interstitial.show()
     }
   },
   mounted(){
     setTimeout(()=>{
       console.log("Cargando banners")
-      this.initAd();
-      this.showBannerFunc();
-      this.showInterstitialFunc();
-      // setInterval(()=>{
-      //   window.plugins.AdMob.createInterstitialView();          //REMOVE THESE 2 LINES IF USING AUTOSHOW
-      //   window.plugins.AdMob.requestInterstitialAd();
-      // },10000);
+      this.initAds();
     },500);
   },
   computed: {
