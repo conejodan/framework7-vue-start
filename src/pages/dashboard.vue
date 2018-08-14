@@ -14,17 +14,17 @@
         </f7-nav-right>
     </f7-navbar>
     <f7-block inner>
-      <f7-row tag="p">
+      <f7-row tag="p" v-if="false">
         <f7-col>
           <f7-button fill @click="prepareBanner">Prepare Banner</f7-button>
         </f7-col>
       </f7-row>
-      <f7-row tag="p">
+      <f7-row tag="p" v-if="false">
         <f7-col>
           <f7-button fill @click="showBanner">Show Banner</f7-button>
         </f7-col>
       </f7-row>
-      <f7-row tag="p">
+      <f7-row tag="p" v-if="false">
         <f7-col>
           <f7-button fill @click="prepareInterstitial">Prepare Interstitial</f7-button>
         </f7-col>
@@ -34,7 +34,7 @@
           <f7-button fill @click="showInterstitial">Show Insterstitial</f7-button>
         </f7-col>
       </f7-row>
-      <f7-row tag="p">
+      <f7-row tag="p" v-if="false">
         <f7-col>
           <f7-button fill @click="prepareRewarded">Prepare Rewarded</f7-button>
         </f7-col>

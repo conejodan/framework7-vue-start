@@ -61,11 +61,19 @@ export default {
       });
       
     },
+    onDeviceReady(){
+      setTimeout(()=>{
+        console.log("Cargando banners")
+        this.initAds();
+      },500);
+    },
     onResume(){
       console.log("onResume");
       setTimeout(()=>{
-       //this.initAds(); 
-      },2500);
+       //admob.banner.prepare();
+       admob.interstitial.prepare();
+       admob.rewardvideo.prepare();
+      },500);
     },
     initAds(){
       var admobid = {}
@@ -74,31 +82,33 @@ export default {
           banner: 'ca-app-pub-6894711411071006/2975463962',
           interstitial: 'ca-app-pub-6894711411071006/1673467493',
           rewarded: 'ca-app-pub-6894711411071006/2708277172',
+          isTesting: false,
         }
       } else if (/(ipod|iphone|ipad)/i.test(navigator.userAgent)) {  // for ios
         admobid = {
           banner: 'ca-app-pub-6894711411071006/2975463962',
           interstitial: 'ca-app-pub-6894711411071006/1673467493',
           rewarded: 'ca-app-pub-6894711411071006/2708277172',
+          isTesting: false,
         }
       }
       admob.banner.config({
         id: admobid.banner,
-        isTesting: false,
+        isTesting: admobid.isTesting,
         autoShow: true,
       })
       admob.banner.prepare();
       //admob.banner.show();
       admob.interstitial.config({
         id: admobid.interstitial,
-        isTesting: false,
+        isTesting: admobid.isTesting,
         autoShow: false,
       })
       admob.interstitial.prepare()
       //admob.interstitial.show()
       admob.rewardvideo.config({
         id: admobid.rewarded,
-        isTesting: false,
+        isTesting: admobid.isTesting,
         autoShow: false,
       })
       admob.rewardvideo.prepare()
@@ -109,10 +119,7 @@ export default {
     }
   },
   mounted(){
-    setTimeout(()=>{
-      console.log("Cargando banners")
-      this.initAds();
-    },500);
+    
   },
   computed: {
     isiOS() {
@@ -121,6 +128,8 @@ export default {
   },
   created() {
     document.addEventListener('backbutton', this.handleBackButton);
+    document.addEventListener('resume', this.onResume);
+    document.addEventListener("deviceready", this.onDeviceReady);
   }
 };
 </script>
