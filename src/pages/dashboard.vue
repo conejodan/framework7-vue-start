@@ -46,7 +46,7 @@
       </f7-row>
       <f7-row tag="p" v-if="false">
         <f7-col>
-          <f7-button fill @click="sumarPuntos">Puntos: {{puntos}} - {{puntos_por_puntos}}</f7-button>
+          <f7-button fill @click="sumarPuntos">Puntos: {{puntos}} - {{reward_min}}</f7-button>
         </f7-col>
       </f7-row>
       <f7-row>
@@ -67,7 +67,12 @@ export default {
       title: 'Hello World',
       panel_left: false,
       puntos: 0,
-      puntos_por_puntos: 0,
+      reward_min: 0,
+      reward_max: 0,
+      interstitial_min: 0,
+      interstitial_max: 0,
+      banner_min: 0,
+      banner_max: 0,
       db:null
     };
   },
@@ -97,7 +102,12 @@ export default {
       },
       cargarConfig(config){
         console.log("config", config)
-        this.puntos_por_puntos = config.puntos_por_puntos
+        this.reward_min = config.reward_min;
+        this.reward_max = config.reward_max;
+        this.interstitial_min = config.interstitial_min;
+        this.interstitial_max = config.interstitial_max;
+        this.banner_min = config.banner_min;
+        this.banner_max = config.banner_max;
       },
     prepareBanner(){
       console.log("Preparando Banner");
@@ -123,19 +133,36 @@ export default {
       console.log("Mostrando Reward");
       admob.rewardvideo.show()
     },
-    sumarPuntos(){  
-      let puntos = Math.floor((Math.random() * 4) + this.puntos_por_puntos);
-      let puntos_ads = puntos + this.puntos;
-      console.log("Sumando Puntos", this.puntos, puntos, puntos_ads)
+    sumarPuntos(puntos){  
       let usuario = firebase.auth().currentUser;
           console.log(usuario);
-          this.db.ref("/"+ usuario.uid + "/puntos_ads").set(puntos_ads).then(()=>{
+          this.db.ref("/"+ usuario.uid + "/puntos_ads").set(puntos).then(()=>{
               console.log("Enviado")
           })
     },
+    sumarPuntosReward(){  
+      let puntos = Math.floor(Math.random() * (this.reward_max - this.reward_min + 1)) + this.reward_min;
+      let puntos_ads = puntos + this.puntos;
+      console.log("Sumando Puntos", this.puntos, puntos, puntos_ads)
+      this.sumarPuntos(puntos_ads);
+    },
+    sumarPuntosInsterstitial(){  
+      let puntos = Math.floor(Math.random() * (this.interstitial_max - this.interstitial_min + 1)) + this.interstitial_min;
+      let puntos_ads = puntos + this.puntos;
+      console.log("Sumando Puntos", this.puntos, puntos, puntos_ads)
+      this.sumarPuntos(puntos_ads);
+    },
+    sumarPuntosBanner(){  
+      let puntos = Math.floor(Math.random() * (this.banner_max - this.banner_min + 1)) + this.banner_min;
+      let puntos_ads = puntos + this.puntos;
+      console.log("Sumando Puntos", this.puntos, puntos, puntos_ads)
+      this.sumarPuntos(puntos_ads);
+    },
   },
   created() {
-    document.addEventListener("admob.rewardvideo.events.REWARD", this.sumarPuntos);
+    document.addEventListener("admob.rewardvideo.events.REWARD", this.sumarPuntosReward);
+    document.addEventListener("admob.interstitial.events.EXIT_APP", this.sumarPuntosInsterstitial);
+    document.addEventListener("admob.banner.events.EXIT_APP", this.sumarPuntosBanner);
   }
 };
 </script>
