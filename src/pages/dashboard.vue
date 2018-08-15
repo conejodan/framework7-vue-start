@@ -24,7 +24,7 @@
           <f7-button fill @click="showBanner">Show Banner</f7-button>
         </f7-col>
       </f7-row>
-      <f7-row tag="p" v-if="false">
+      <f7-row tag="p" v-if="true">
         <f7-col>
           <f7-button fill @click="prepareInterstitial">Prepare Interstitial</f7-button>
         </f7-col>
@@ -34,7 +34,7 @@
           <f7-button fill @click="showInterstitial">Show Insterstitial</f7-button>
         </f7-col>
       </f7-row>
-      <f7-row tag="p" v-if="false">
+      <f7-row tag="p" v-if="true">
         <f7-col>
           <f7-button fill @click="prepareRewarded">Prepare Rewarded</f7-button>
         </f7-col>
@@ -44,9 +44,15 @@
           <f7-button fill @click="showReward">Show Rewarded</f7-button>
         </f7-col>
       </f7-row>
-      <f7-row>
+      <f7-row tag="p">
         <f7-col>
+          <f7-button fill @click="sumarPuntos">Puntos: {{puntos}} - {{puntos_por_puntos}}</f7-button>
         </f7-col>
+      </f7-row>
+      <f7-row>
+          <f7-list simple-list>
+              <f7-list-item :title="'Monto Ganado: $' + ((puntos)?puntos/100:0) + ' pesos (MXN)' "></f7-list-item>
+          </f7-list>
       </f7-row>
     </f7-block>
   </f7-page>
@@ -59,7 +65,10 @@ export default {
   data() {
     return {
       title: 'Hello World',
-      panel_left: false
+      panel_left: false,
+      puntos: 0,
+      puntos_por_puntos: 0,
+      db:null
     };
   },
   mounted(){
@@ -70,11 +79,26 @@ export default {
       if(user){
         console.log("onAuthStateChange", user)
         this.saveUsuario(user.uid)
+        this.cargarFire()
       }
     });
   },
   methods:{
     ...mapActions(['saveUsuario']),
+    cargarFire(){
+      let usuario = firebase.auth().currentUser;
+      this.db= firebase.database();
+      console.log("Perfil Usuario", usuario);
+        this.db.ref("/"+ usuario.uid+ "/puntos_ads").on('value', snapshot => this.cargarPuntos(snapshot.val()));
+        this.db.ref("/configs").on('value', snapshot => this.cargarConfig(snapshot.val()));
+    },
+    cargarPuntos(puntos){
+          this.puntos = puntos;
+      },
+      cargarConfig(config){
+        console.log("config", config)
+        this.puntos_por_puntos = config.puntos_por_puntos
+      },
     prepareBanner(){
       console.log("Preparando Banner");
       admob.banner.prepare();
@@ -92,15 +116,26 @@ export default {
       admob.interstitial.show()
     },
     prepareRewarded(){
-      console.log("Preparando Insterstitial");
+      console.log("Preparando Reward");
       admob.rewardvideo.prepare()
     },
     showReward(){
       console.log("Mostrando Reward");
       admob.rewardvideo.show()
     },
-    showAd(){
+    sumarPuntos(){  
+      let puntos = Math.floor((Math.random() * 4) + this.puntos_por_puntos);
+      let puntos_ads = puntos + this.puntos;
+      console.log("Sumando Puntos", this.puntos, puntos, puntos_ads)
+      let usuario = firebase.auth().currentUser;
+          console.log(usuario);
+          this.db.ref("/"+ usuario.uid + "/puntos_ads").set(puntos_ads).then(()=>{
+              console.log("Enviado")
+          })
     },
+  },
+  created() {
+    document.addEventListener("admob.rewardvideo.events.REWARD", this.sumarPuntos);
   }
 };
 </script>
