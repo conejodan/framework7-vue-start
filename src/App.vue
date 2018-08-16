@@ -24,7 +24,7 @@
 </template>
 
 <script>
-import firebase from 'firebase';
+import {auth} from 'firebase';
 import {mapActions} from 'vuex';
 export default {
   name: 'App',
@@ -32,7 +32,7 @@ export default {
     ...mapActions(['saveUsuario']),
     logout(){
       console.log("Logout");
-      firebase.auth().signOut().then(()=>{
+      auth().signOut().then(()=>{
         this.saveUsuario(null);
         this.$f7.panel.close();
         this.$f7.views.main.router.navigate('/')

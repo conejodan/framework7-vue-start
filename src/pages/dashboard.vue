@@ -58,7 +58,7 @@
   </f7-page>
 </template>
 <script>
-import firebase from 'firebase';
+import {auth, database} from 'firebase';
 import {mapActions} from 'vuex';
 export default {
   name: 'Home',
@@ -78,9 +78,9 @@ export default {
   },
   mounted(){
     console.log("Iniciando")
-    let usuario = firebase.auth().currentUser;
+    let usuario = auth().currentUser;
     console.log("Dashboard Usuario",usuario);
-    firebase.auth().onAuthStateChanged((user)=>{
+    auth().onAuthStateChanged((user)=>{
       if(user){
         console.log("onAuthStateChange", user)
         this.saveUsuario(user.uid)
@@ -91,8 +91,8 @@ export default {
   methods:{
     ...mapActions(['saveUsuario']),
     cargarFire(){
-      let usuario = firebase.auth().currentUser;
-      this.db= firebase.database();
+      let usuario = auth().currentUser;
+      this.db= database();
       console.log("Perfil Usuario", usuario);
         this.db.ref("/"+ usuario.uid+ "/puntos_ads").on('value', snapshot => this.cargarPuntos(snapshot.val()));
         this.db.ref("/configs").on('value', snapshot => this.cargarConfig(snapshot.val()));
@@ -134,7 +134,7 @@ export default {
       admob.rewardvideo.show()
     },
     sumarPuntos(puntos){  
-      let usuario = firebase.auth().currentUser;
+      let usuario = auth().currentUser;
           console.log(usuario);
           this.db.ref("/"+ usuario.uid + "/puntos_ads").set(puntos).then(()=>{
               console.log("Enviado")

@@ -51,7 +51,7 @@
   </f7-page>
 </template>
 <script>
-import firebase from 'firebase';
+import {auth} from 'firebase';
 import {mapState,mapGetters,mapMutations, mapActions} from 'vuex';
 
 export default {
@@ -88,7 +88,7 @@ export default {
     signIn(){
       console.log("Comprobando sesion de: "+ this.email);
       this.$f7.dialog.preloader("Validando...");
-      firebase.auth().signInWithEmailAndPassword(this.email,this.password).then(
+      auth().signInWithEmailAndPassword(this.email,this.password).then(
         (user)=>{
           console.log("Iniciando Sesion");
           this.saveUsuario(user.user.uid);
@@ -111,7 +111,7 @@ export default {
     },
     forgetPassword(){
       console.log("Olvide Contraseña");
-      firebase.auth().sendPasswordResetEmail(this.email).then(()=>{
+      auth().sendPasswordResetEmail(this.email).then(()=>{
         console.log("Olvidar Contraseña Exitoso");
         this.email = "";
         this.popupOpened = false;
