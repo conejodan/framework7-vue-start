@@ -44,16 +44,6 @@
           <f7-button fill @click="showReward">Show Rewarded</f7-button>
         </f7-col>
       </f7-row>
-      <f7-row tag="p" v-if="false">
-        <f7-col>
-          <f7-button fill @click="sumarPuntos">Puntos: {{puntos}} - {{reward_min}}</f7-button>
-        </f7-col>
-      </f7-row>
-      <f7-row>
-          <f7-list simple-list>
-              <f7-list-item :title="'Monto Ganado: $' + ((puntos)?puntos/100:0) + ' pesos (MXN)' "></f7-list-item>
-          </f7-list>
-      </f7-row>
     </f7-block>
   </f7-page>
 </template>

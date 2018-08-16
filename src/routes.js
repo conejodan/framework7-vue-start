@@ -12,6 +12,7 @@ import EntrevistaFamilia from './pages/Entrevista/familia.vue';
 import EntrevistaEspacios from './pages/Entrevista/espacios.vue';
 import EntrevistaDatos from './pages/Entrevista/entrevista_datos.vue';
 import Mapa from './pages/mapa.vue';
+import Camara from './pages/camara.vue';
 import NotFoundPage from './pages/not-found.vue';
 
 let router =  [
@@ -70,6 +71,10 @@ let router =  [
   {
     path: '/mapa',
     component: Mapa
+  },
+  {
+    path: '/camara',
+    component: Camara
   },
   {
     path: '(.*)',

@@ -20,6 +20,7 @@
     </platform>
     <platform name="android">
         <allow-intent href="market:*" />
+        <preference name="android-targetSdkVersion" value="26" />
         <preference name="android-minSdkVersion" value="24" />
         <icon density="ldpi" src="res/icon/android/drawable-ldpi-icon.png" />
         <icon density="mdpi" src="res/icon/android/drawable-mdpi-icon.png" />
@@ -39,6 +40,7 @@
         <allow-intent href="itms-apps:*" />
         <preference name="BackupWebStorage" value="none" />
         <preference name="Orientation" value="all" />
+        <preference name="KeepRunning" value="true" />
         <icon height="180" src="res/icon/ios/icon-60@3x.png" width="180" />
         <icon height="60" src="res/icon/ios/icon-60.png" width="60" />
         <icon height="120" src="res/icon/ios/icon-60@2x.png" width="120" />
@@ -95,6 +97,11 @@
     <plugin name="cordova-plugin-geolocation" spec="^4.0.1" />
     <plugin name="cordova-plugin-whitelist" />
     <plugin name="cordova-plugin-admob-free" spec="^0.17.4" />
+    <plugin name="cordova-plugin-camera" spec="^4.0.3">
+        <variable name="CAMERA_USAGE_DESCRIPTION" value="Solo para poder tomar la foto que se enviará como complemento a tu registro de actividad" />
+        <variable name="PHOTOLIBRARY_USAGE_DESCRIPTION" value="Almacenar temporalmente la imagen tomada antes de enviarla al servidor" />
+    </plugin>
+    <plugin name="cordova-plugin-file" spec="^6.0.1" />
     <engine name="ios" spec="^4.5.5" />
     <engine name="android" spec="^7.0.0" />
 </widget>
