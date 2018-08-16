@@ -1,6 +1,6 @@
-import firebase from 'firebase';
+import {auth} from 'firebase';
 
-const auth = {
+const author = {
     user:null
 };
 
@@ -31,10 +31,10 @@ const actions= {
     getUsuario (context, user) {
         console.log("getUsuario", context.getters.getUser);
         let result = null;
-        if(!firebase.auth().currentUser){
+        if(!auth().currentUser){
             result = localStorage.getItem('ancle_user');
         }else{
-            result = firebase.auth().currentUser
+            result = auth().currentUser
         }
           
         return result;
@@ -42,7 +42,7 @@ const actions= {
   }
 
 export default {
-    state:auth,
+    state:author,
     getters,
     mutations,
     actions

@@ -63,7 +63,7 @@
                 <f7-list-item title="Seguridad Estructural" link="/entrevista/seguridad_estructural"></f7-list-item>
                 <f7-list-item title="Familia" link="/entrevista/familia"></f7-list-item>
                 <f7-list-item title="Espacios" link="/entrevista/espacios"></f7-list-item>
-                <f7-list-item title="Entrevista" link="#"></f7-list-item>
+                <f7-list-item title="Entrevista" link="/entrevista/entrevista_datos"></f7-list-item>
             </f7-list>
         </f7-list>
     </f7-block>

@@ -90,7 +90,7 @@
   </f7-page>
 </template>
 <script>
-import firebase from 'firebase';
+import {auth, database} from 'firebase';
 
 export default {
   name: 'Home',
@@ -119,8 +119,8 @@ export default {
     console.log("Montando Mapa");
     this.$f7.dialog.preloader("Obteniendo ubicacion...");
     this.getLocation();
-    this.db= firebase.database();
-    let usuario = firebase.auth().currentUser;
+    this.db= database();
+    let usuario = auth().currentUser;
     console.log("Perfil Usuario", usuario);
   },
   computed:{
@@ -178,7 +178,7 @@ export default {
       this.$f7.dialog.confirm('Quieres eliminar todos los puntos?', ()=> {
         this.$f7.dialog.alert('Puntos Eliminados!');
         this.puntos = [];
-      let usuario = firebase.auth().currentUser;
+      let usuario = auth().currentUser;
       this.db.ref("/"+ usuario.uid + "/puntos").remove().then(()=>{
               console.log("Enviado")
           })
@@ -189,7 +189,7 @@ export default {
       for(let key in this.puntos_firebase){
           last_key = key;
         }
-      let usuario = firebase.auth().currentUser;
+      let usuario = auth().currentUser;
       this.db.ref("/"+ usuario.uid + "/puntos/"+ last_key).remove().then(()=>{
               console.log("Enviado")
           })
@@ -209,7 +209,7 @@ export default {
       console.log("Guardado Location");
       let {lat, lng} = this.mapa.center_map;
       //this.puntos.push({lat,lng});
-      let usuario = firebase.auth().currentUser;
+      let usuario = auth().currentUser;
       this.db.ref("/"+ usuario.uid + "/puntos").push({lat,lng}).then(()=>{
               console.log("Enviado")
           })
@@ -236,7 +236,7 @@ export default {
       navigator.geolocation.getCurrentPosition((position)=>{
         this.ubication = true;
         this.$f7.dialog.close();
-        let usuario = firebase.auth().currentUser;
+        let usuario = auth().currentUser;
         this.db.ref("/"+ usuario.uid+ "/puntos").on('value', snapshot => this.cargarPuntos(snapshot.val()));
         this.mapa.center_map.lat = position.coords.latitude;
         this.mapa.center_map.lng = position.coords.longitude;

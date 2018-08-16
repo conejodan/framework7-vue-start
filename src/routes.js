@@ -10,6 +10,7 @@ import EntrevistaFactibilidad from './pages/Entrevista/factibilidad.vue';
 import EntrevistaSeguridadEstructural from './pages/Entrevista/seguridadestructural.vue';
 import EntrevistaFamilia from './pages/Entrevista/familia.vue';
 import EntrevistaEspacios from './pages/Entrevista/espacios.vue';
+import EntrevistaDatos from './pages/Entrevista/entrevista_datos.vue';
 import Mapa from './pages/mapa.vue';
 import NotFoundPage from './pages/not-found.vue';
 
@@ -61,6 +62,10 @@ let router =  [
   {
     path: '/entrevista/espacios',
     component: EntrevistaEspacios
+  },
+  {
+    path: '/entrevista/entrevista_datos',
+    component: EntrevistaDatos
   },
   {
     path: '/mapa',

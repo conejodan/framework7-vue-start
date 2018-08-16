@@ -26,7 +26,7 @@
   </f7-page>
 </template>
 <script>
-import firebase from 'firebase';
+import {auth} from 'firebase';
 
 export default {
   name: 'Home',
@@ -43,7 +43,7 @@ export default {
       console.log("Iniciando Sesion")
       console.log("Usuario: "+ this.username)
 
-      firebase.auth().createUserWithEmailAndPassword(this.email,this.password).then(
+      auth().createUserWithEmailAndPassword(this.email,this.password).then(
         (user)=>{
           console.log("Iniciando Sesion");
           console.log(user);

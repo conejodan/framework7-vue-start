@@ -43,7 +43,7 @@
   </f7-page>
 </template>
 <script>
-import firebase from 'firebase';
+import {auth, database} from 'firebase';
 
 export default {
   name: 'Home',
@@ -62,8 +62,8 @@ export default {
   },
   mounted(){
       console.log("Iniciando Perfil");
-      this.db= firebase.database();
-      let usuario = firebase.auth().currentUser;
+      this.db= database();
+      let usuario = auth().currentUser;
       console.log("Perfil Usuario", usuario);
         this.db.ref("/"+ usuario.uid+ "/perfil").on('value', snapshot => this.cargarPerfil(snapshot.val()));
   },
@@ -74,7 +74,7 @@ export default {
           this.form = {nombre, apellidos, telefono, email};
       },
       sendForm(){
-          let usuario = firebase.auth().currentUser;
+          let usuario = auth().currentUser;
           console.log(usuario);
           this.form.email = usuario.email;
           this.db.ref("/"+ usuario.uid + "/perfil").set(this.form).then(()=>{
