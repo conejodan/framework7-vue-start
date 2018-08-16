@@ -14,7 +14,9 @@
         </f7-nav-right>
     </f7-navbar>
     <f7-block>
-        <f7-list no-hairlines-md form>
+            <f7-card title="Datos">
+                <f7-card-content :padding="false">
+                    <f7-list no-hairlines-md form>
             <f7-list-item>
                 <f7-label>Paquete</f7-label>
                 <f7-input type="select" placeholder="">
@@ -54,18 +56,24 @@
                 <f7-input type="tel" placeholder="" clear-button></f7-input>
             </f7-list-item>
 
-            <f7-block-title>Secciones</f7-block-title>
-            <f7-list>
-                <f7-list-item title="Domicilio" link="/entrevista/domicilio"></f7-list-item>
-                <f7-list-item title="Servicios en el Lote" link="/entrevista/serv_lote"></f7-list-item>
-                <f7-list-item title="Servicios de la Vivienda" link="/entrevista/serv_vivienda"></f7-list-item>
-                <f7-list-item title="Factibilidad" link="/entrevista/factibilidad"></f7-list-item>
-                <f7-list-item title="Seguridad Estructural" link="/entrevista/seguridad_estructural"></f7-list-item>
-                <f7-list-item title="Familia" link="/entrevista/familia"></f7-list-item>
-                <f7-list-item title="Espacios" link="/entrevista/espacios"></f7-list-item>
-                <f7-list-item title="Entrevista" link="/entrevista/entrevista_datos"></f7-list-item>
-            </f7-list>
         </f7-list>
+            </f7-card-content>
+            </f7-card>
+
+            <f7-card title="Secciones">
+                <f7-card-content :padding="false">
+                    <f7-list>
+                        <f7-list-item title="Domicilio" link="/entrevista/domicilio"></f7-list-item>
+                        <f7-list-item title="Servicios en el Lote" link="/entrevista/serv_lote"></f7-list-item>
+                        <f7-list-item title="Servicios de la Vivienda" link="/entrevista/serv_vivienda"></f7-list-item>
+                        <f7-list-item title="Factibilidad" link="/entrevista/factibilidad"></f7-list-item>
+                        <f7-list-item title="Seguridad Estructural" link="/entrevista/seguridad_estructural"></f7-list-item>
+                        <f7-list-item title="Familia" link="/entrevista/familia"></f7-list-item>
+                        <f7-list-item title="Espacios" link="/entrevista/espacios"></f7-list-item>
+                        <f7-list-item title="Entrevista" link="/entrevista/entrevista_datos"></f7-list-item>
+                    </f7-list>
+                </f7-card-content>
+            </f7-card>
     </f7-block>
   </f7-page>
 </template>
