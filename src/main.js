@@ -30,7 +30,7 @@ Vue.use(VueGoogleMaps, {
     }
 });
 
-import {initializeApp} from 'firebase';
+import {initializeApp} from 'firebase/app';
 console.log("Iniciando Firebase")
 var config = {
   apiKey: "AIzaSyChkm5Cly2Jno10oWIZt0_gg1ATeEaIqvE",
