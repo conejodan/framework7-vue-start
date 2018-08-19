@@ -50,11 +50,11 @@ export default {
       console.log(navigator.camera);
       navigator.camera.getPicture(this.onSuccessCamera, this.onFailCamera,
                         {
-                            quality: 80,
+                            quality: 100,
                             destinationType: Camera.DestinationType.FILE_URI,
                             cameraDirection : 1,
                             correctOrientation: true,
-                            targetWidth: 300
+                            targetWidth: 600
                         });
     },
     getFileContentAsBase64(path,callback){
@@ -76,6 +76,8 @@ export default {
         }
     },
     onSuccessCamera(imageURI) {
+      console.log("onSuccessCamera")
+      console.log(imageURI);
         this.getFileContentAsBase64(imageURI,(base64Image)=>{
           console.log("getFileContentAsBase64")
           console.log(base64Image)

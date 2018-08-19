@@ -17,19 +17,30 @@ const mutations = {
 }
 
 const actions= {
-    initAdmob(context){
-        console.log("initAdmob");
-        
-    },
-    showBanner(context) {
-        console.log("showBanner");
-    },
-    showInterstitial(context) {
-        console.log("showInterstitial");
-    },
-    hideInterstitial(context) {
-        console.log("hideInterstitial");
-    }
+    prepareBanner(){
+        console.log("Preparando Banner");
+        admob.banner.prepare();
+      },
+      showBanner(){
+        console.log("Mostrando Banner");
+        admob.banner.show();
+      },
+      prepareInterstitial(){
+        console.log("Preparando Insterstitial");
+        admob.interstitial.prepare();
+      },
+      showInterstitial(){
+        console.log("Mostrando Interstitial");
+        admob.interstitial.show()
+      },
+      prepareRewarded(){
+        console.log("Preparando Reward");
+        admob.rewardvideo.prepare()
+      },
+      showReward(){
+        console.log("Mostrando Reward");
+        admob.rewardvideo.show()
+      },
   }
 
 export default {

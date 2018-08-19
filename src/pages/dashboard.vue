@@ -14,39 +14,24 @@
         </f7-nav-right>
     </f7-navbar>
     <f7-block inner>
-      <f7-row tag="p" v-if="false">
-        <f7-col>
-          <f7-button fill @click="prepareBanner">Prepare Banner</f7-button>
-        </f7-col>
-      </f7-row>
-      <f7-row tag="p" v-if="false">
-        <f7-col>
-          <f7-button fill @click="showBanner">Show Banner</f7-button>
-        </f7-col>
-      </f7-row>
-      <f7-row tag="p" v-if="false">
-        <f7-col>
-          <f7-button fill @click="prepareInterstitial">Prepare Interstitial</f7-button>
-        </f7-col>
-      </f7-row>
-      <f7-row tag="p">
-        <f7-col>
-          <f7-button fill @click="showInterstitial">Show Insterstitial</f7-button>
-        </f7-col>
-      </f7-row>
-      <f7-row tag="p" v-if="false">
-        <f7-col>
-          <f7-button fill @click="prepareRewarded">Prepare Rewarded</f7-button>
-        </f7-col>
-      </f7-row>
-      <f7-row tag="p">
-        <f7-col>
-          <f7-button fill @click="showReward">Show Rewarded</f7-button>
-        </f7-col>
-      </f7-row>
       <f7-row tag="p">
         <f7-col>
           <f7-button fill @click="uploadFile">Subir Archivo</f7-button>
+        </f7-col>
+      </f7-row>
+      <f7-row tag="p">
+        <f7-col>
+          <f7-button fill @click="downloadFile">Descargar Archivo</f7-button>
+          <div id="tomar_foto" class="center"
+             style="text-align: center; align-items: center; justify-content: center;">
+            <img :src="imagenTomada" class="image-section" 
+                     style="margin: 0px auto">
+          </div>
+        </f7-col>
+      </f7-row>
+      <f7-row tag="p">
+        <f7-col>
+          <f7-button fill @click="deleteFile">Eliminar Archivo</f7-button>
         </f7-col>
       </f7-row>
     </f7-block>
@@ -61,13 +46,7 @@ export default {
     return {
       title: 'Hello World',
       panel_left: false,
-      puntos: 0,
-      reward_min: 0,
-      reward_max: 0,
-      interstitial_min: 0,
-      interstitial_max: 0,
-      banner_min: 0,
-      banner_max: 0,
+      imagenTomada: null,
       db:null
     };
   },
@@ -82,9 +61,69 @@ export default {
         this.cargarFire()
       }
     });
+    this.showInterstitial();
   },
   methods:{
-    ...mapActions(['saveUsuario']),
+    ...mapActions(['saveUsuario', 'showInterstitial']),
+    deleteFile(){
+      console.log("Eliminando archivo");
+      let storageRef = storage().ref();
+      var desertRef = storageRef.child('mountains.jpg');
+
+      // Delete the file
+      desertRef.delete().then(function() {
+        console.log("Archivo Eliminado")
+      }).catch(function(error) {
+        console.log("Error al eliminar archivo", error)
+        // Uh-oh, an error occurred!
+      });
+    },
+    downloadFile(){
+      console.log("Descargando archivo");
+      let storageRef = storage().ref();
+      // Create a reference to the file we want to download
+      var starsRef = storageRef.child('mountains.jpg');
+
+      // Get the download URL
+      starsRef.getDownloadURL().then((url)=> {
+        console.log("Archivo Descargado")
+        console.log(url);
+        this.imagenTomada = url;
+
+        console.log("Solicitando Descarga")
+        var xhr = new XMLHttpRequest();
+        xhr.responseType = 'blob';
+        xhr.onload = function(event) {
+          console.log("Archivo Blod")
+          console.log(xhr.response)
+          var blob = xhr.response;
+        };
+        xhr.open('GET', url);
+        xhr.send()
+        // Insert url into an <img> tag to "download"
+      }).catch(function(error) {
+
+        // A full list of error codes is available at
+        // https://firebase.google.com/docs/storage/web/handle-errors
+        switch (error.code) {
+          case 'storage/object_not_found':
+            // File doesn't exist
+            break;
+
+          case 'storage/unauthorized':
+            // User doesn't have permission to access the object
+            break;
+
+          case 'storage/canceled':
+            // User canceled the upload
+            break;
+
+          case 'storage/unknown':
+            // Unknown error occurred, inspect the server response
+            break;
+        }
+      });
+    },
     uploadFile(){
       console.log("Subiendo Archivo");
       let storageRef = storage().ref();
@@ -120,75 +159,10 @@ export default {
       let usuario = auth().currentUser;
       this.db= database();
       console.log("Perfil Usuario", usuario);
-        this.db.ref("/"+ usuario.uid+ "/puntos_ads").on('value', snapshot => this.cargarPuntos(snapshot.val()));
-        this.db.ref("/configs").on('value', snapshot => this.cargarConfig(snapshot.val()));
     },
-    cargarPuntos(puntos){
-          this.puntos = puntos;
-      },
-      cargarConfig(config){
-        console.log("config", config)
-        this.reward_min = config.reward_min;
-        this.reward_max = config.reward_max;
-        this.interstitial_min = config.interstitial_min;
-        this.interstitial_max = config.interstitial_max;
-        this.banner_min = config.banner_min;
-        this.banner_max = config.banner_max;
-      },
-    prepareBanner(){
-      console.log("Preparando Banner");
-      admob.banner.prepare();
-    },
-    showBanner(){
-      console.log("Mostrando Banner");
-      admob.banner.show();
-    },
-    prepareInterstitial(){
-      console.log("Preparando Insterstitial");
-      admob.interstitial.prepare();
-    },
-    showInterstitial(){
-      console.log("Mostrando Interstitial");
-      admob.interstitial.show()
-    },
-    prepareRewarded(){
-      console.log("Preparando Reward");
-      admob.rewardvideo.prepare()
-    },
-    showReward(){
-      console.log("Mostrando Reward");
-      admob.rewardvideo.show()
-    },
-    sumarPuntos(puntos){  
-      let usuario = auth().currentUser;
-          console.log(usuario);
-          this.db.ref("/"+ usuario.uid + "/puntos_ads").set(puntos).then(()=>{
-              console.log("Enviado")
-          })
-    },
-    sumarPuntosReward(){  
-      let puntos = Math.floor(Math.random() * (this.reward_max - this.reward_min + 1)) + this.reward_min;
-      let puntos_ads = puntos + this.puntos;
-      console.log("Sumando Puntos", this.puntos, puntos, puntos_ads)
-      this.sumarPuntos(puntos_ads);
-    },
-    sumarPuntosInsterstitial(){  
-      let puntos = Math.floor(Math.random() * (this.interstitial_max - this.interstitial_min + 1)) + this.interstitial_min;
-      let puntos_ads = puntos + this.puntos;
-      console.log("Sumando Puntos", this.puntos, puntos, puntos_ads)
-      this.sumarPuntos(puntos_ads);
-    },
-    sumarPuntosBanner(){  
-      let puntos = Math.floor(Math.random() * (this.banner_max - this.banner_min + 1)) + this.banner_min;
-      let puntos_ads = puntos + this.puntos;
-      console.log("Sumando Puntos", this.puntos, puntos, puntos_ads)
-      this.sumarPuntos(puntos_ads);
-    },
+    
   },
   created() {
-    document.addEventListener("admob.rewardvideo.events.REWARD", this.sumarPuntosReward);
-    document.addEventListener("admob.interstitial.events.EXIT_APP", this.sumarPuntosInsterstitial);
-    document.addEventListener("admob.banner.events.EXIT_APP", this.sumarPuntosBanner);
   }
 };
 </script>

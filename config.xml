@@ -1,8 +1,8 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="com.phonegap.myapp" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-    <name>My App</name>
-    <description>        A basic Vue.js + Framework7 template for PhoneGap.    </description>
-    <author email="tommy@devgeeks.org" href="http://phonegap.com">        Adobe PhoneGap Team    </author>
+<widget id="com.phonegap.ancle" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+    <name>Ancle</name>
+    <description>Aplicacion que hace muchas cosas y ha la vez nada.</description>
+    <author email="conejodan@gmail.com" href="http://phonegap.com">Conejodan</author>
     <content src="index.html" />
     <access origin="*" />
     <access origin="*://*.googleapis.com/*" subdomains="true" />
