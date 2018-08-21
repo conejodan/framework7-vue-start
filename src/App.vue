@@ -66,7 +66,60 @@ export default {
       setTimeout(()=>{
         console.log("Cargando banners")
         this.initAds();
-      },500);
+        this.bkgEnable()
+      },1000);
+      setTimeout(()=>{
+        this.bkgIsScreenOff();
+      },10000);
+      setTimeout(()=>{
+        this.bkgDisable();
+      },30000);
+    },
+    bkgEnable(){
+      console.log("bkgEnable")
+      setTimeout(()=>{
+        cordova.plugins.backgroundMode.on('activate', ()=> { 
+          console.log("onActivate")
+          cordova.plugins.backgroundMode.disableWebViewOptimizations(); 
+          cordova.plugins.backgroundMode.moveToBackground(); 
+          setInterval(()=>{
+            this.getLocation();
+          },2000);
+          /* YOUR CODE GOES HERE */ });
+        //cordova.plugins.backgroundMode.disableWebViewOptimizations();
+      },1000)
+      setTimeout(()=>{
+        cordova.plugins.backgroundMode.enable();
+      },2000)
+    },
+    getLocation(){
+      navigator.geolocation.getCurrentPosition((position)=>{
+          console.log("getPosicion");
+          console.log(position.coords.latitude);
+          console.log(position.coords.longitude);
+        }, (error)=>{
+              console.log('Error Current Position: '    + error.code    + ',' +
+                'message: ' + error.message + '\n');
+                if(error.code == 3){
+              setTimeout(()=>{
+                this.getLocation();
+              },3000);
+            }
+        },{
+            enableHighAccuracy: true,
+            timeout: 10000,
+            maximumAge: 0
+          });
+    },
+    bkgIsScreenOff(){
+      // cordova.plugins.backgroundMode.isScreenOff(function(bool) {
+      //         console.log("Mandando mensaje")
+      //         console.log(bool)
+      // });
+    },
+    bkgDisable(){
+      console.log("bkgDisable")
+      cordova.plugins.backgroundMode.disable();
     },
     onResume(){
       console.log("onResume");
