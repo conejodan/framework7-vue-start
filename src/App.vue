@@ -70,10 +70,34 @@ export default {
       },1000);
       setTimeout(()=>{
         this.bkgIsScreenOff();
-      },10000);
+        this.appVersion()
+      },5000);
       setTimeout(()=>{
         this.bkgDisable();
-      },30000);
+      },10000);
+    },
+    appVersion(){
+      setTimeout(()=>{
+        cordova.getAppVersion.getVersionNumber().then(function (version) {
+          alert("Version Number " + version);
+        });
+      },5000);
+      setTimeout(()=>{
+        cordova.getAppVersion.getVersionCode().then(function (version) {
+          alert("Version Code " + version);
+        });
+      },10000);
+      setTimeout(()=>{
+        cordova.getAppVersion.getPackageName().then(function (version) {
+          alert("Package Name " + version);
+        });
+      },15000);
+      setTimeout(()=>{
+        cordova.getAppVersion.getAppName().then(function (version) {
+          alert("App Name" + version);
+        });
+      },20000);
+      
     },
     bkgEnable(){
       console.log("bkgEnable")
