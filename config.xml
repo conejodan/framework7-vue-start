@@ -22,6 +22,7 @@
         <allow-intent href="market:*" />
         <preference name="android-targetSdkVersion" value="26" />
         <preference name="android-minSdkVersion" value="24" />
+        <preference name="android-compileSdkVersion" value="24" />
         <icon density="ldpi" src="res/icon/android/drawable-ldpi-icon.png" />
         <icon density="mdpi" src="res/icon/android/drawable-mdpi-icon.png" />
         <icon density="hdpi" src="res/icon/android/drawable-hdpi-icon.png" />
@@ -103,6 +104,9 @@
     </plugin>
     <plugin name="cordova-plugin-file" spec="^6.0.1" />
     <plugin name="cordova-plugin-background-mode" spec="^0.7.2" />
+    <plugin name="phonegap-plugin-barcodescanner" spec="^8.0.0">
+        <variable name="ANDROID_SUPPORT_V4_VERSION" value="27.+" />
+    </plugin>
     <engine name="ios" spec="^4.5.5" />
-    <engine name="android" spec="^7.0.0" />
+    <engine name="android" spec="~7.0.0" />
 </widget>

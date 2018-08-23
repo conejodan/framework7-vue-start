@@ -89,7 +89,7 @@ export default {
         //cordova.plugins.backgroundMode.disableWebViewOptimizations();
       },1000)
       setTimeout(()=>{
-        cordova.plugins.backgroundMode.enable();
+        //cordova.plugins.backgroundMode.enable();
       },2000)
     },
     getLocation(){
