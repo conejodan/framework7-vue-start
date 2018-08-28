@@ -20,6 +20,8 @@
     <!-- Main View -->
     <f7-view id="main-view" url="/" main></f7-view>
     <MyAdmob />
+    <AppVersion />
+    <BackgroundMode />
 
   </div>
 </template>
@@ -28,10 +30,15 @@
 import {auth} from 'firebase';
 import {mapActions} from 'vuex';
 import MyAdmob from './components/Admob';
+import AppVersion from './components/AppVersion';
+import BackgroundMode from './components/BackgroundMode';
+
 export default {
   name: 'App',
   components: {
-    MyAdmob
+    MyAdmob,
+    AppVersion,
+    BackgroundMode
   },
   methods: {
     ...mapActions(['saveUsuario']),
@@ -67,79 +74,7 @@ export default {
       
     },
     onDeviceReady(){
-      setTimeout(()=>{
-        this.bkgEnable()
-      },1000);
-      setTimeout(()=>{
-        this.bkgIsScreenOff();
-        this.appVersion()
-      },5000);
-      setTimeout(()=>{
-        this.bkgDisable();
-      },10000);
-    },
-    appVersion(){
-      setTimeout(()=>{
-        cordova.getAppVersion.getVersionNumber().then(function (version) {
-          alert("Version Number " + version);
-        });
-      },5000);
-      setTimeout(()=>{
-        cordova.getAppVersion.getVersionCode().then(function (version) {
-          alert("Version Code " + version);
-        });
-      },10000);
-      setTimeout(()=>{
-        cordova.getAppVersion.getPackageName().then(function (version) {
-          alert("Package Name " + version);
-        });
-      },15000);
-      setTimeout(()=>{
-        cordova.getAppVersion.getAppName().then(function (version) {
-          alert("App Name" + version);
-        });
-      },20000);
       
-    },
-    bkgEnable(){
-      console.log("bkgEnable")
-      setTimeout(()=>{
-        cordova.plugins.backgroundMode.on('activate', ()=> { 
-          console.log("onActivate")
-          cordova.plugins.backgroundMode.disableWebViewOptimizations(); 
-          cordova.plugins.backgroundMode.moveToBackground(); 
-          setInterval(()=>{
-            this.getLocation();
-          },2000);
-          /* YOUR CODE GOES HERE */ });
-        //cordova.plugins.backgroundMode.disableWebViewOptimizations();
-      },1000)
-      setTimeout(()=>{
-        //cordova.plugins.backgroundMode.enable();
-      },2000)
-    },
-    getLocation(){
-      navigator.geolocation.getCurrentPosition((position)=>{
-          console.log("getPosicion");
-          console.log(position.coords.latitude);
-          console.log(position.coords.longitude);
-        }, (error)=>{
-              console.log('Error Current Position: '    + error.code    + ',' +
-                'message: ' + error.message + '\n');
-                if(error.code == 3){
-              setTimeout(()=>{
-                this.getLocation();
-              },3000);
-            }
-        },{
-            enableHighAccuracy: true,
-            timeout: 10000,
-            maximumAge: 0
-          });
-    },
-    bkgDisable(){
-      console.log("bkgDisable")
-      cordova.plugins.backgroundMode.disable();
     },
     onResume(){
       console.log("onResume");
