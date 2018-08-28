@@ -46,6 +46,8 @@ console.log("Firebase Iniciado")
 // Init F7 Vue Plugin
 Vue.use(Framework7Vue, Framework7);
 
+//Vue.component("my-admob", require("./components/Admob.vue"));
+
 import {store} from './store/store';
 
 // Init App

@@ -61,10 +61,9 @@ export default {
         this.cargarFire()
       }
     });
-    this.showInterstitial();
   },
   methods:{
-    ...mapActions(['saveUsuario', 'showInterstitial']),
+    ...mapActions(['saveUsuario']),
     deleteFile(){
       console.log("Eliminando archivo");
       let storageRef = storage().ref();

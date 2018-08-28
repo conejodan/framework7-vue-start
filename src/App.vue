@@ -19,7 +19,7 @@
 
     <!-- Main View -->
     <f7-view id="main-view" url="/" main></f7-view>
-
+    <MyAdmob />
 
   </div>
 </template>
@@ -27,8 +27,12 @@
 <script>
 import {auth} from 'firebase';
 import {mapActions} from 'vuex';
+import MyAdmob from './components/Admob';
 export default {
   name: 'App',
+  components: {
+    MyAdmob
+  },
   methods: {
     ...mapActions(['saveUsuario']),
     logout(){
@@ -64,8 +68,6 @@ export default {
     },
     onDeviceReady(){
       setTimeout(()=>{
-        console.log("Cargando banners")
-        this.initAds();
         this.bkgEnable()
       },1000);
       setTimeout(()=>{
@@ -135,66 +137,13 @@ export default {
             maximumAge: 0
           });
     },
-    bkgIsScreenOff(){
-      // cordova.plugins.backgroundMode.isScreenOff(function(bool) {
-      //         console.log("Mandando mensaje")
-      //         console.log(bool)
-      // });
-    },
     bkgDisable(){
       console.log("bkgDisable")
       cordova.plugins.backgroundMode.disable();
     },
     onResume(){
       console.log("onResume");
-      setTimeout(()=>{
-       //admob.banner.prepare();
-       admob.interstitial.prepare();
-       admob.rewardvideo.prepare();
-      },500);
     },
-    initAds(){
-      var admobid = {}
-      if (/(android)/i.test(navigator.userAgent)) {  // for android & amazon-fireos
-        admobid = {
-          banner: 'ca-app-pub-6894711411071006/2975463962',
-          interstitial: 'ca-app-pub-6894711411071006/1673467493',
-          rewarded: 'ca-app-pub-6894711411071006/2708277172',
-          isTesting: false,
-        }
-      } else if (/(ipod|iphone|ipad)/i.test(navigator.userAgent)) {  // for ios
-        admobid = {
-          banner: 'ca-app-pub-6894711411071006/2975463962',
-          interstitial: 'ca-app-pub-6894711411071006/1673467493',
-          rewarded: 'ca-app-pub-6894711411071006/2708277172',
-          isTesting: false,
-        }
-      }
-      admob.banner.config({
-        id: admobid.banner,
-        isTesting: admobid.isTesting,
-        autoShow: true,
-      })
-      admob.banner.prepare();
-      //admob.banner.show();
-      admob.interstitial.config({
-        id: admobid.interstitial,
-        isTesting: admobid.isTesting,
-        autoShow: false,
-      })
-      admob.interstitial.prepare()
-      //admob.interstitial.show()
-      admob.rewardvideo.config({
-        id: admobid.rewarded,
-        isTesting: admobid.isTesting,
-        autoShow: false,
-      })
-      admob.rewardvideo.prepare()
-    },
-    showInsterstitial(){
-      console.log("showInsteerstitial")
-      admob.interstitial.show()
-    }
   },
   mounted(){
     
