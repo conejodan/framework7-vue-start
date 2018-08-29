@@ -18,9 +18,9 @@
         <f7-col>
           <f7-button fill @click="takePicture">Tomar foto {{imagenTomada}}</f7-button>
           <div id="tomar_foto" class="center"
-             style="text-align: center; align-items: center; justify-content: center;">
+             style="text-align: center; height: 200px; align-items: center; justify-content: center;">
             <img :src="imagenTomada" class="image-section" @click="takePicture"
-                     style="margin: 0px auto">
+                     style="margin: 0px auto;">
           </div>
         </f7-col>
       </f7-row>
