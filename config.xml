@@ -112,6 +112,7 @@
     </plugin>
     <plugin name="cordova-plugin-app-version" spec="^0.1.9" />
     <plugin name="cordova-plugin-splashscreen" spec="^5.0.2" />
+    <plugin name="onesignal-cordova-plugin" spec="^2.4.3" />
     <engine name="ios" spec="^4.5.5" />
     <engine name="android" spec="^7.0.0" />
 </widget>

@@ -82,7 +82,17 @@ export default {
     },
   },
   mounted(){
-    
+    setTimeout(()=>{
+      console.log("App::montando");
+      var notificationOpenedCallback = function(jsonData) {
+        console.log('notificationOpenedCallback: ' + JSON.stringify(jsonData));
+      };
+
+      window.plugins.OneSignal
+        .startInit("50217a8f-a10d-4539-8e80-6b252c78ccff")
+        .handleNotificationOpened(notificationOpenedCallback)
+        .endInit();
+    },1000);
   },
   computed: {
     isiOS() {
