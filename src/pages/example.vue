@@ -16,7 +16,7 @@
     <f7-block inner>
       <f7-row tag="p">
         <f7-col>
-          <f7-button fill @click="callCamara">Tomar foto</f7-button>
+          <f7-button fill @click="callEvento">Evento</f7-button>
         </f7-col>
       </f7-row>
     </f7-block>
@@ -26,17 +26,19 @@
 //import {auth, database} from 'firebase';
 //import {mapActions} from 'vuex';
 export default {
-  name: 'Camara',
+  name: 'Example',
   data() {
     return {
-      title: 'Camara',
+      title: 'Example',
     };
   },
   mounted(){
-    console.log("Cargando Camara")
+    console.log("Cargando Example")
   },
   methods:{
-    
+    callEvento(){
+      alert("Evento llamado");
+    }
   },
 };
 </script>
