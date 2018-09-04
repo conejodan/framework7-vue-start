@@ -14,6 +14,7 @@
             <f7-list-item title="Mapa" link="/mapa" panel-close></f7-list-item>
             <f7-list-item title="Camara" link="/camara" panel-close></f7-list-item>
             <f7-list-item title="Background" link="/background" panel-close></f7-list-item>
+            <f7-list-item title="OneSignal" link="/onesignal" panel-close></f7-list-item>
             <f7-list-item title="Salir" @click="logout" panel-close></f7-list-item>
           </f7-list>
     </f7-panel>
