@@ -14,6 +14,7 @@ import EntrevistaDatos from './pages/Entrevista/entrevista_datos.vue';
 import Mapa from './pages/mapa.vue';
 import Camara from './pages/camara.vue';
 import Background from './pages/background.vue';
+import OneSignal from './pages/onesignal.vue';
 import NotFoundPage from './pages/not-found.vue';
 
 let router =  [
@@ -80,6 +81,10 @@ let router =  [
   {
     path: '/background',
     component: Background
+  },
+  {
+    path: '/onesignal',
+    component: OneSignal
   },
   {
     path: '(.*)',
