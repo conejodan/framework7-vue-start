@@ -35,6 +35,11 @@
         <splash density="port-ldpi" src="res/screen/android/drawable-port-ldpi-screen.png" />
         <splash density="port-mdpi" src="res/screen/android/drawable-port-mdpi-screen.png" />
         <splash density="port-xhdpi" src="res/screen/android/drawable-port-xhdpi-screen.png" />
+        <resource-file src="res/onesignal/drawable-mdpi/onesignal.png" target="res/drawable-mdpi/onesignal.png" />
+        <resource-file src="res/onesignal/drawable-hdpi/onesignal.png" target="res/drawable-hdpi/onesignal.png" />
+        <resource-file src="res/onesignal/drawable-xhdpi/onesignal.png" target="res/drawable-xhdpi/onesignal.png" />
+        <resource-file src="res/onesignal/drawable-xxhdpi/onesignal.png" target="res/drawable-xxhdpi/onesignal.png" />
+        <resource-file src="res/onesignal/drawable-xxxhdpi/onesignal.png" target="res/drawable-xxxhdpi/onesignal.png" />
     </platform>
     <platform name="ios">
         <allow-intent href="itms:*" />
