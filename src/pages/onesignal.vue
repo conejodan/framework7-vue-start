@@ -47,9 +47,11 @@ export default {
   },
   methods:{
     suscribirse(valor){
+      console.log("OneSignal::suscribirse")
       window.plugins.OneSignal.setSubscription(valor);
     },
     sendPush(){
+      console.log("OneSignal::suscribirse")
       window.plugins.OneSignal.getIds(function(ids) {
         console.log("OneSignal::sendPush");
         console.log(ids);

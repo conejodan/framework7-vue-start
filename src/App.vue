@@ -19,11 +19,14 @@
           </f7-list>
     </f7-panel>
 
-    <!-- Main View -->
-    <f7-view id="main-view" url="/" main></f7-view>
+    <!-- Main View 
     <MyAdmob />
-    <AppVersion />
     <BackgroundMode />
+    -->
+    <f7-view id="main-view" url="/" main></f7-view>
+    
+    <AppVersion />
+    
 
   </div>
 </template>
