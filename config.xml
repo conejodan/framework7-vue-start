@@ -35,11 +35,6 @@
         <splash density="port-ldpi" src="res/screen/android/drawable-port-ldpi-screen.png" />
         <splash density="port-mdpi" src="res/screen/android/drawable-port-mdpi-screen.png" />
         <splash density="port-xhdpi" src="res/screen/android/drawable-port-xhdpi-screen.png" />
-        <resource-file src="res/onesignal/drawable-mdpi/onesignal.png" target="res/drawable-mdpi/onesignal.png" />
-        <resource-file src="res/onesignal/drawable-hdpi/onesignal.png" target="res/drawable-hdpi/onesignal.png" />
-        <resource-file src="res/onesignal/drawable-xhdpi/onesignal.png" target="res/drawable-xhdpi/onesignal.png" />
-        <resource-file src="res/onesignal/drawable-xxhdpi/onesignal.png" target="res/drawable-xxhdpi/onesignal.png" />
-        <resource-file src="res/onesignal/drawable-xxxhdpi/onesignal.png" target="res/drawable-xxxhdpi/onesignal.png" />
     </platform>
     <platform name="ios">
         <allow-intent href="itms:*" />
@@ -103,21 +98,16 @@
     <preference name="SplashScreenDelay" value="4000" />
     <preference name="SplashMaintainAspectRatio" value="true" />
     <preference name="phonegap-version" value="cli-6.1.0" />
+    <engine name="ios" spec="^4.5.5" />
+    <engine name="android" spec="^7.0.0" />
     <plugin name="cordova-plugin-geolocation" spec="^4.0.1" />
-    <plugin name="cordova-plugin-whitelist" />
-    <plugin name="cordova-plugin-admob-free" spec="^0.17.4" />
-    <plugin name="cordova-plugin-camera" spec="^4.0.3">
-        <variable name="CAMERA_USAGE_DESCRIPTION" value="Solo para poder tomar la foto que se enviará como complemento a tu registro de actividad" />
-        <variable name="PHOTOLIBRARY_USAGE_DESCRIPTION" value="Almacenar temporalmente la imagen tomada antes de enviarla al servidor" />
-    </plugin>
-    <plugin name="cordova-plugin-file" spec="^6.0.1" />
-    <plugin name="cordova-plugin-background-mode" spec="^0.7.2" />
-    <plugin name="phonegap-plugin-barcodescanner" spec="^8.0.0">
-        <variable name="ANDROID_SUPPORT_V4_VERSION" value="27.+" />
-    </plugin>
+    <plugin name="cordova-plugin-whitelist" spec="~1.3.3" />
+    <plugin name="cordova-plugin-admob-free" spec="~0.17.4" />
+    <plugin name="cordova-plugin-file" spec="~6.0.1" />
+    <plugin name="cordova-plugin-background-mode" spec="~0.7.2" />
+    <plugin name="phonegap-plugin-barcodescanner" spec="~8.0.0" />
+    <plugin name="cordova-plugin-camera" spec="~4.0.3" />
     <plugin name="cordova-plugin-app-version" spec="^0.1.9" />
     <plugin name="cordova-plugin-splashscreen" spec="^5.0.2" />
     <plugin name="onesignal-cordova-plugin" spec="^2.4.3" />
-    <engine name="ios" spec="^4.5.5" />
-    <engine name="android" spec="^7.0.0" />
 </widget>
