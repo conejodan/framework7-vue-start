@@ -203,7 +203,7 @@ export default {
         if(google){
           distance = google.maps.geometry.spherical.computeDistanceBetween(new google.maps.LatLng(first.lat, first.lng),new google.maps.LatLng(second.lat, second.lng));
         }
-        return distance.toFixed(2);
+        return parseFloat(distance.toFixed(2));
     },
     saveLocation(){
       console.log("Guardado Location");

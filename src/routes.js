@@ -12,6 +12,7 @@ import EntrevistaFamilia from './pages/Entrevista/familia.vue';
 import EntrevistaEspacios from './pages/Entrevista/espacios.vue';
 import EntrevistaDatos from './pages/Entrevista/entrevista_datos.vue';
 import Mapa from './pages/mapa.vue';
+import Mapa2 from './pages/mapa2.vue';
 import Camara from './pages/camara.vue';
 import Background from './pages/background.vue';
 import OneSignal from './pages/onesignal.vue';
@@ -73,6 +74,10 @@ let router =  [
   {
     path: '/mapa',
     component: Mapa
+  },
+  {
+    path: '/mapa2',
+    component: Mapa2
   },
   {
     path: '/camara',

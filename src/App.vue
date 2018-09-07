@@ -12,6 +12,7 @@
             <f7-list-item title="Perfil" link="/formulario" panel-close></f7-list-item>
             <f7-list-item title="Entrevista" link="/entrevista" panel-close></f7-list-item>
             <f7-list-item title="Mapa" link="/mapa" panel-close></f7-list-item>
+            <f7-list-item title="Mapa2" link="/mapa2" panel-close></f7-list-item>
             <f7-list-item title="Camara" link="/camara" panel-close></f7-list-item>
             <f7-list-item title="Background" link="/background" panel-close></f7-list-item>
             <f7-list-item title="OneSignal" link="/onesignal" panel-close></f7-list-item>
