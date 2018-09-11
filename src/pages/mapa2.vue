@@ -28,7 +28,7 @@
         <f7-fab-button label="Ver puntos" fab-close color="orange" @click="popupPuntos = true">
           <f7-icon f7="eye" md="material:close"></f7-icon>
         </f7-fab-button>
-        <f7-fab-button label="Guardar Punto" fab-close color="green" @click="popupGuardarPunto = true">
+        <f7-fab-button label="Guardar Punto" fab-close color="green" @click="openSavePunto">
           <f7-icon f7="document_text_fill"></f7-icon>
         </f7-fab-button>
       </f7-fab-buttons>
@@ -41,9 +41,16 @@
           </f7-nav-right>
         </f7-navbar>
         <f7-block>
-          <f7-list simple-list>
-              
+          <f7-card-content :padding="false">
+          <f7-list media-list>
+              <f7-list-item v-for="(punto, index) in puntos_firebase" :key="index"
+                link="#"
+                :title="punto.nombre"
+                :subtitle="punto.latitude + ',' + punto.longitude"
+                :text="punto.direccion"
+              ></f7-list-item>
           </f7-list>
+          </f7-card-content>
         </f7-block>
       </f7-page>
     </f7-popup>
@@ -55,9 +62,37 @@
           </f7-nav-right>
         </f7-navbar>
         <f7-block>
-          <f7-list simple-list>
-              
+          <f7-list no-hairlines-md form>
+            <f7-list-item>
+                <f7-label>Alias</f7-label>
+                <f7-input type="text" placeholder="" 
+                :value="form.nombre" @input="form.nombre = $event.target.value"
+                clear-button></f7-input>
+            </f7-list-item>
+            <f7-list-item>
+                <f7-label>Latitude</f7-label>
+                <f7-input type="text" placeholder="" 
+                :value="form.latitude" @input="form.latitude = $event.target.value"
+                clear-button></f7-input>
+            </f7-list-item>
+            <f7-list-item>
+                <f7-label>Longitude</f7-label>
+                <f7-input type="text" placeholder="" 
+                :value="form.longitude" @input="form.longitude = $event.target.value"
+                clear-button></f7-input>
+            </f7-list-item>
+            <f7-list-item>
+                <f7-label>Direccion</f7-label>
+                <f7-input type="text" placeholder="" 
+                :value="form.direccion" @input="form.direccion = $event.target.value"
+                clear-button></f7-input>
+            </f7-list-item>
           </f7-list>
+          <f7-row>
+            <f7-col>
+                <f7-button fill @click="savePunto">Guardar Punto</f7-button>
+            </f7-col>
+          </f7-row>
         </f7-block>
       </f7-page>
     </f7-popup>
@@ -78,17 +113,16 @@ export default {
           position:null,
           zoom_map:5
       },
+      form:{
+        nombre: "",
+        latitude:"",
+        longitude:"",
+        direccion:""
+      },
       ubication:false,
       popupPuntos:false,
       popupGuardarPunto:false,
-      last_punto:"",
       puntos_firebase:null,
-      puntos_detalle:[],
-      puntos:[
-        // {lat:18.0361701, lng:-92.9304299},
-        // {lat:17.9851545, lng:-92.9072556},
-        // {lat:17.9856443, lng:-92.964333}
-      ]
     };
   },
   mounted(){
@@ -98,51 +132,37 @@ export default {
     this.db= database();
     let usuario = auth().currentUser;
     console.log("Perfil Usuario", usuario);
+    this.db.ref("/puntos/" + usuario.uid).on('value', snapshot => this.cargarPuntos(snapshot.val()));
   },
   methods:{
-    loadPuntos(){
-      
-    },
-    
-    borrar(){
-      this.$f7.dialog.confirm('Quieres eliminar todos los puntos?', ()=> {
-        this.$f7.dialog.alert('Puntos Eliminados!');
-        
-      let usuario = auth().currentUser;
-      this.db.ref("/"+ usuario.uid + "/puntos").remove().then(()=>{
-              console.log("Enviado")
-          })
-      });
-    },
-    borrar_ultimo_punto(){
-      let last_key= "";
-      for(let key in this.puntos_firebase){
-          last_key = key;
+    cargarPuntos(puntos){
+      console.log("Cargando Puntos");
+      if(puntos){
+        this.puntos_firebase = [];
+        console.log("Tiene puntos")
+        for(let key in puntos){
+          console.log("puntos[key]", puntos[key])
+          let {latitude, longitude, nombre, direccion} = puntos[key];
+          this.puntos_firebase.push({latitude, longitude, nombre, direccion});
         }
+      }
+    },
+    openSavePunto(){
+      this.popupGuardarPunto = true;
+      this.form.latitude = this.mapa.lat;
+      this.form.longitude = this.mapa.lng;
+    },
+    savePunto(){
+      console.log("Guardando Puntos", this.form);
       let usuario = auth().currentUser;
-      this.db.ref("/"+ usuario.uid + "/puntos/"+ last_key).remove().then(()=>{
+      this.db.ref("/puntos/"+ usuario.uid).push(this.form).then(()=>{
+              this.popupGuardarPunto = false;
+              alert("Punto Guardado")
               console.log("Enviado")
           })
     },
-    calculate(){
-      console.log("Calculando");
-      
-    },
-    getDistanceBetween(first, second){
-        let distance = 0;
-        if(google){
-          distance = google.maps.geometry.spherical.computeDistanceBetween(new google.maps.LatLng(first.lat, first.lng),new google.maps.LatLng(second.lat, second.lng));
-        }
-        return distance.toFixed(2);
-    },
-    saveLocation(){
-      console.log("Guardado Location");
-      let {lat, lng} = this.mapa.center_map;
-      //this.puntos.push({lat,lng});
-      let usuario = auth().currentUser;
-      this.db.ref("/mis_puntos/"+ usuario.uid).push({lat,lng}).then(()=>{
-              console.log("Enviado")
-          })
+    getPuntos(){
+
     },
     getWatchLocation(){
         navigator.geolocation.watchPosition((position)=>{
