@@ -149,8 +149,8 @@ export default {
     },
     openSavePunto(){
       this.popupGuardarPunto = true;
-      this.form.latitude = this.mapa.lat;
-      this.form.longitude = this.mapa.lng;
+      this.form.latitude = this.mapa.position.lat;
+      this.form.longitude = this.mapa.position.lng;
     },
     savePunto(){
       console.log("Guardando Puntos", this.form);
