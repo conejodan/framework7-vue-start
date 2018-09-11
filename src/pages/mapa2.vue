@@ -148,9 +148,27 @@ export default {
       }
     },
     openSavePunto(){
+      
+      let {lat, lng} = this.mapa.position;
+      this.form.latitude = lat;
+      this.form.longitude = lng;
+      var geocoder = new google.maps.Geocoder;
+
+      geocoder.geocode({'location': this.mapa.position}, (results,status)=>{ 
+        console.log("Cargando GeoCoder")
+				if (status === 'OK') {
+					if (results[0]) {
+						this.form.direccion = results[0].formatted_address;
+					} else {
+						alert('Direccion no encontrada');
+					}
+				} else {
+					alert('Geocoder failed due to: ' + status);
+				}
+
+			}); 
+
       this.popupGuardarPunto = true;
-      this.form.latitude = this.mapa.position.lat;
-      this.form.longitude = this.mapa.position.lng;
     },
     savePunto(){
       console.log("Guardando Puntos", this.form);
