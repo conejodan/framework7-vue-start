@@ -101,7 +101,7 @@
         <f7-actions-label>Acciones</f7-actions-label>
         <f7-actions-button bold>Marcar en Mapa</f7-actions-button>
         <f7-actions-button>Editar</f7-actions-button>
-        <f7-actions-button color="red">Eliminar</f7-actions-button>
+        <f7-actions-button color="red" @click="eliminarPunto">Eliminar</f7-actions-button>
         <f7-actions-button color="red">Cancel</f7-actions-button>
       </f7-actions-group>
     </f7-actions>
@@ -145,6 +145,20 @@ export default {
     this.db.ref("/puntos/" + usuario.uid).on('value', snapshot => this.cargarPuntos(snapshot.val()));
   },
   methods:{
+    eliminarPunto(){
+      console.log("Eliminando")
+      let {nombre, key} = this.punto_selected;
+      this.$f7.dialog.confirm('Quieres eliminar el punto de '+ nombre +'?', ()=> {
+        let usuario = auth().currentUser;
+        this.db.ref("/puntos/" + usuario.uid + "/" + key).remove().then(()=>{
+          this.$f7.dialog.alert('Punto Eliminado!');
+              console.log("Eliminado")
+          })
+        this.punto_selected = null;
+      },()=>{
+        this.punto_selected = null;
+      });
+    },
     selectPunto(punto){
       console.log("Seleccionando", punto)
       this.punto_selected = punto;
@@ -152,8 +166,8 @@ export default {
     },
     cargarPuntos(puntos){
       console.log("Cargando Puntos");
+      this.puntos_firebase = [];
       if(puntos){
-        this.puntos_firebase = [];
         console.log("Tiene puntos")
         for(let key in puntos){
           console.log("puntos[key]", puntos[key])
@@ -163,6 +177,10 @@ export default {
       }
     },
     openSavePunto(){
+      if(!this.mapa.position){
+        this.$f7.dialog.alert('No se tiene una ubicacion, espere por favor');
+        return;
+      }
       
       let {lat, lng} = this.mapa.position;
       this.form.latitude = lat;
@@ -190,9 +208,8 @@ export default {
       let usuario = auth().currentUser;
       this.db.ref("/puntos/"+ usuario.uid).push(this.form).then(()=>{
               this.popupGuardarPunto = false;
-              alert("Punto Guardado")
-              console.log("Enviado")
-          })
+              this.$f7.dialog.alert('Punto Guardado!');
+          });
     },
     getPuntos(){
 
