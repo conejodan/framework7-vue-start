@@ -44,7 +44,7 @@
           <f7-card-content :padding="false">
           <f7-list media-list>
               <f7-list-item v-for="(punto, index) in puntos_firebase" :key="index"
-                link="#"
+                @click="selectPunto(punto)"
                 :title="punto.nombre"
                 :subtitle="punto.latitude + ',' + punto.longitude"
                 :text="punto.direccion"
@@ -96,6 +96,15 @@
         </f7-block>
       </f7-page>
     </f7-popup>
+    <f7-actions ref="actionsOneGroup">
+      <f7-actions-group>
+        <f7-actions-label>Acciones</f7-actions-label>
+        <f7-actions-button bold>Marcar en Mapa</f7-actions-button>
+        <f7-actions-button>Editar</f7-actions-button>
+        <f7-actions-button color="red">Eliminar</f7-actions-button>
+        <f7-actions-button color="red">Cancel</f7-actions-button>
+      </f7-actions-group>
+    </f7-actions>
   </f7-page>
 </template>
 <script>
@@ -123,6 +132,7 @@ export default {
       popupPuntos:false,
       popupGuardarPunto:false,
       puntos_firebase:null,
+      punto_selected:null,
     };
   },
   mounted(){
@@ -135,6 +145,11 @@ export default {
     this.db.ref("/puntos/" + usuario.uid).on('value', snapshot => this.cargarPuntos(snapshot.val()));
   },
   methods:{
+    selectPunto(punto){
+      console.log("Seleccionando", punto)
+      this.punto_selected = punto;
+      this.$refs.actionsOneGroup.open();
+    },
     cargarPuntos(puntos){
       console.log("Cargando Puntos");
       if(puntos){
@@ -143,7 +158,7 @@ export default {
         for(let key in puntos){
           console.log("puntos[key]", puntos[key])
           let {latitude, longitude, nombre, direccion} = puntos[key];
-          this.puntos_firebase.push({latitude, longitude, nombre, direccion});
+          this.puntos_firebase.push({latitude, longitude, nombre, direccion, key});
         }
       }
     },
