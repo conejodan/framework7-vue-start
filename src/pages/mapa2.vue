@@ -19,7 +19,13 @@
                         :zoom="mapa.zoom_map"
                         :style="'width: auto; height:' + this.height +'px'"
                 >
-                <GmapMarker v-if="mapa.position" :position="mapa.position"/>
+                <GmapMarker v-if="mapa.position" :position="mapa.position" :icon="pinSymbol('#007aff')"/>
+                <GmapMarker 
+                v-if="markers" v-for="(marker, index) in markers" 
+                :clickable="true"
+                @click="eliminarPunto(index)"
+                :key="index" 
+                :position="marker"/>
       </GmapMap>
     <f7-fab position="right-bottom" slot="fixed">
       <f7-icon f7="add"></f7-icon>
@@ -30,6 +36,9 @@
         </f7-fab-button>
         <f7-fab-button label="Guardar Punto" fab-close color="green" @click="openSavePunto">
           <f7-icon f7="document_text_fill"></f7-icon>
+        </f7-fab-button>
+        <f7-fab-button label="Eliminar Marcadores" fab-close color="red" @click="clearMarkers">
+          <f7-icon f7="close"></f7-icon>
         </f7-fab-button>
       </f7-fab-buttons>
     </f7-fab>
@@ -54,7 +63,16 @@
         </f7-block>
       </f7-page>
     </f7-popup>
-    <f7-popup class="demo-popup" :opened="popupGuardarPunto" @popup:closed="popupGuardarPunto = false">
+    <f7-actions ref="actionsOneGroup">
+      <f7-actions-group>
+        <f7-actions-label>Acciones</f7-actions-label>
+        <f7-actions-button bold @click="marcarPunto">Marcar en Mapa</f7-actions-button>
+        <f7-actions-button @click="editPunto">Editar</f7-actions-button>
+        <f7-actions-button color="red" @click="eliminarPuntos">Eliminar</f7-actions-button>
+        <f7-actions-button color="red">Cancel</f7-actions-button>
+      </f7-actions-group>
+    </f7-actions>
+    <f7-popup class="demo-popup" :opened="popupGuardarPunto" @popup:closed="closeGuardarPunto">
       <f7-page>
         <f7-navbar title="Guardar Punto">
           <f7-nav-right>
@@ -88,23 +106,19 @@
                 clear-button></f7-input>
             </f7-list-item>
           </f7-list>
-          <f7-row>
+          <f7-row v-if="!form_key">
             <f7-col>
                 <f7-button fill @click="savePunto">Guardar Punto</f7-button>
+            </f7-col>
+          </f7-row>
+          <f7-row v-else>
+            <f7-col>
+                <f7-button fill @click="editarPunto">Editar Punto</f7-button>
             </f7-col>
           </f7-row>
         </f7-block>
       </f7-page>
     </f7-popup>
-    <f7-actions ref="actionsOneGroup">
-      <f7-actions-group>
-        <f7-actions-label>Acciones</f7-actions-label>
-        <f7-actions-button bold>Marcar en Mapa</f7-actions-button>
-        <f7-actions-button>Editar</f7-actions-button>
-        <f7-actions-button color="red" @click="eliminarPunto">Eliminar</f7-actions-button>
-        <f7-actions-button color="red">Cancel</f7-actions-button>
-      </f7-actions-group>
-    </f7-actions>
   </f7-page>
 </template>
 <script>
@@ -122,6 +136,7 @@ export default {
           position:null,
           zoom_map:5
       },
+      form_key:"",
       form:{
         nombre: "",
         latitude:"",
@@ -133,6 +148,7 @@ export default {
       popupGuardarPunto:false,
       puntos_firebase:null,
       punto_selected:null,
+      markers:[]
     };
   },
   mounted(){
@@ -145,7 +161,71 @@ export default {
     this.db.ref("/puntos/" + usuario.uid).on('value', snapshot => this.cargarPuntos(snapshot.val()));
   },
   methods:{
-    eliminarPunto(){
+    fitBounds(){
+      var b = new google.maps.LatLngBounds();
+      if(this.mapa.position){
+        b.extend(this.mapa.position);
+      }
+      this.markers.map((item)=>{
+        b.extend(item);
+      });
+      this.$refs.googleMap.fitBounds(b);
+    },
+    pinSymbol(color) {
+      return {
+          path: 'M 0,0 C -2,-20 -10,-22 -10,-30 A 10,10 0 1,1 10,-30 C 10,-22 2,-20 0,0 z M -2,-30 a 2,2 0 1,1 4,0 2,2 0 1,1 -4,0',
+          fillColor: color,
+          fillOpacity: 1,
+          strokeColor: '#000',
+          strokeWeight: 1,
+          scale: 1,
+      };
+    },
+    clearMarkers(){
+      this.$f7.dialog.confirm('Quieres quitar todos los marcadores?', ()=> {
+        this.markers = [];
+      });
+    },
+    editarPunto(){
+      console.log("editando punto")
+      let usuario = auth().currentUser;
+        this.db.ref("/puntos/" + usuario.uid + "/" + this.form_key).set(this.form).then(()=>{
+          this.$f7.dialog.alert('Punto Actualizado!');
+          this.closeGuardarPunto();
+        });
+    },
+    closeGuardarPunto(){
+      this.popupGuardarPunto = false;
+      this.form_key = "";
+      this.form = {
+        nombre: "",
+        latitude:"",
+        longitude:"",
+        direccion:""
+      }
+    },
+    marcarPunto(){
+      console.log("marcar Punto", this.punto_selected);
+      let {latitude, longitude} = this.punto_selected;
+      this.markers.push({lat:latitude, lng:longitude});
+      this.popupPuntos = false;
+      this.fitBounds();
+    },
+    editPunto(){
+      console.log("Editar Punto");
+      let {nombre, direccion, latitude, longitude, key} = this.punto_selected;
+      this.form = {nombre, direccion, latitude, longitude};
+      this.form_key = key;
+      this.popupPuntos = false;
+      this.popupGuardarPunto = true;
+    },
+    eliminarPunto(index){
+      console.log("Eliminando Puntos");
+      this.$f7.dialog.confirm('Quieres quitar este punto?', ()=> {
+      this.markers.splice(index,1)
+      });
+    },
+    eliminarPuntos(){
       console.log("Eliminando")
       let {nombre, key} = this.punto_selected;
       this.$f7.dialog.confirm('Quieres eliminar el punto de '+ nombre +'?', ()=> {
@@ -161,7 +241,8 @@ export default {
     },
     selectPunto(punto){
       console.log("Seleccionando", punto)
-      this.punto_selected = punto;
+      let {nombre, direccion, latitude, longitude, key} = punto;
+      this.punto_selected = {nombre, direccion, latitude, longitude, key};
       this.$refs.actionsOneGroup.open();
     },
     cargarPuntos(puntos){
@@ -178,7 +259,7 @@ export default {
     },
     openSavePunto(){
       if(!this.mapa.position){
-        this.$f7.dialog.alert('No se tiene una ubicacion, espere por favor');
+        this.$f7.dialog.alert('No se tiene una ubicacion, espere por favor', "Sin Ubicacion");
         return;
       }
       
