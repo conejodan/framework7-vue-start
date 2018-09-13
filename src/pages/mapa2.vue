@@ -101,7 +101,7 @@
             </f7-list-item>
             <f7-list-item>
                 <f7-label>Direccion</f7-label>
-                <f7-input type="text" placeholder="" 
+                <f7-input type="textarea" resizable placeholder="" 
                 :value="form.direccion" @input="form.direccion = $event.target.value"
                 clear-button></f7-input>
             </f7-list-item>
@@ -131,6 +131,7 @@ export default {
       height:window.innerHeight ,
       db:null,
       get_map:true,
+      isWatchPosition:false,
       mapa:{
           center_map:{lat:24.083304, lng:-102.339398},
           position:null,
@@ -184,6 +185,7 @@ export default {
     clearMarkers(){
       this.$f7.dialog.confirm('Quieres quitar todos los marcadores?', ()=> {
         this.markers = [];
+        this.fitBounds();
       });
     },
     editarPunto(){
@@ -223,6 +225,7 @@ export default {
       console.log("Eliminando Puntos");
       this.$f7.dialog.confirm('Quieres quitar este punto?', ()=> {
       this.markers.splice(index,1)
+      this.fitBounds();
       });
     },
     eliminarPuntos(){
@@ -255,6 +258,7 @@ export default {
           let {latitude, longitude, nombre, direccion} = puntos[key];
           this.puntos_firebase.push({latitude, longitude, nombre, direccion, key});
         }
+        this.puntos_firebase.reverse();
       }
     },
     openSavePunto(){
@@ -298,7 +302,10 @@ export default {
     getWatchLocation(){
         navigator.geolocation.watchPosition((position)=>{
         console.log("Position",position);
-        this.$f7.dialog.close();
+        if(!this.isWatchPosition){
+          this.isWatchPosition = true;
+          this.$f7.dialog.close();
+        }
         let {latitude, longitude} = position.coords; 
         this.mapa.position = {lat:latitude, lng: longitude};
         this.mapa.zoom_map = 18;
