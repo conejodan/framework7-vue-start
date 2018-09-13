@@ -17,6 +17,7 @@
                         ref="googleMap"
                         :center="mapa.center_map"
                         :zoom="mapa.zoom_map"
+                        :options="{minZoom: 5, maxZoom: 20}"
                         :style="'width: auto; height:' + this.height +'px'"
                 >
                 <GmapMarker v-if="mapa.position" :position="mapa.position" :icon="pinSymbol('#007aff')"/>
@@ -154,7 +155,7 @@ export default {
   },
   mounted(){
     console.log("Montando Mapa");
-    //this.$f7.dialog.preloader("Obteniendo ubicacion...");
+    this.$f7.dialog.preloader("Obteniendo ubicacion...");
     this.getLocation();
     this.db= database();
     let usuario = auth().currentUser;

@@ -14,7 +14,7 @@
       </f7-list>
       <f7-row tag="p">
         <f7-col>
-          <f7-button fill @click="signIn">Iniciar</f7-button>
+          <f7-button type="submit" fill @click="signIn">Iniciar</f7-button>
         </f7-col>
       </f7-row>
       <f7-row>
@@ -85,6 +85,9 @@ export default {
   methods:{
     ...mapActions(['saveUsuario','getUsuario']),
     ...mapMutations(['saveUser']),
+    pressedKey(key){
+      console.log(key)
+    },
     signIn(){
       console.log("Comprobando sesion de: "+ this.email);
       this.$f7.dialog.preloader("Validando...");
