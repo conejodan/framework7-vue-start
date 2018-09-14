@@ -28,7 +28,7 @@
                 :key="index" 
                 :position="marker"/>
       </GmapMap>
-    <f7-fab position="right-bottom" slot="fixed">
+    <f7-fab position="left-bottom" slot="fixed">
       <f7-icon f7="add"></f7-icon>
       <f7-icon f7="arrow_down" ></f7-icon>
       <f7-fab-buttons position="top">
@@ -54,11 +54,16 @@
           <f7-card-content :padding="false">
           <f7-list media-list>
               <f7-list-item v-for="(punto, index) in puntos_firebase" :key="index"
-                @click="selectPunto(punto)"
                 :title="punto.nombre"
                 :subtitle="punto.latitude + ',' + punto.longitude"
                 :text="punto.direccion"
-              ></f7-list-item>
+              >
+              <f7-fab-button slot="media" color="red" @click="selectPunto(punto)">
+          <f7-icon f7="help_fill" ></f7-icon>
+        </f7-fab-button>
+              
+              <f7-toggle slot="after"></f7-toggle>
+              </f7-list-item>
           </f7-list>
           </f7-card-content>
         </f7-block>
@@ -129,7 +134,7 @@ export default {
   name: 'Home',
   data() {
     return {
-      height:window.innerHeight ,
+      height:window.innerHeight - 60,
       db:null,
       get_map:true,
       isWatchPosition:false,
@@ -155,7 +160,7 @@ export default {
   },
   mounted(){
     console.log("Montando Mapa");
-    this.$f7.dialog.preloader("Obteniendo ubicacion...");
+    //this.$f7.dialog.preloader("Obteniendo ubicacion...");
     this.getLocation();
     this.db= database();
     let usuario = auth().currentUser;
