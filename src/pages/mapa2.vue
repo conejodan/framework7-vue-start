@@ -22,11 +22,11 @@
                 >
                 <GmapMarker v-if="mapa.position" :position="mapa.position" :icon="pinSymbol('#007aff')"/>
                 <GmapMarker 
-                v-if="markers" v-for="(marker, index) in markers" 
+                v-if="puntos_firebase && marker.mostrar" v-for="(marker, index) in puntos_firebase" 
                 :clickable="true"
-                @click="eliminarPunto(index)"
+                @click="eliminarPunto('toggle-'+marker.key)"
                 :key="index" 
-                :position="marker"/>
+                :position="{lat:marker.latitude, lng:marker.longitude}"/>
       </GmapMap>
     <f7-fab position="left-bottom" slot="fixed">
       <f7-icon f7="add"></f7-icon>
@@ -59,10 +59,10 @@
                 :text="punto.direccion"
               >
               <f7-fab-button slot="media" color="red" @click="selectPunto(punto)">
-          <f7-icon f7="help_fill" ></f7-icon>
-        </f7-fab-button>
+                <f7-icon f7="help_fill" ></f7-icon>
+              </f7-fab-button>
               
-              <f7-toggle slot="after"></f7-toggle>
+              <f7-toggle slot="after" :value="0" :ref="'toggle-'+ punto.key" :checked="punto.mostrar" @toggle:change="showHidePunto(punto)"></f7-toggle>
               </f7-list-item>
           </f7-list>
           </f7-card-content>
@@ -72,7 +72,7 @@
     <f7-actions ref="actionsOneGroup">
       <f7-actions-group>
         <f7-actions-label>Acciones</f7-actions-label>
-        <f7-actions-button bold @click="marcarPunto">Marcar en Mapa</f7-actions-button>
+        <f7-actions-button bold @click="fijarPunto">Fijar en Mapa</f7-actions-button>
         <f7-actions-button @click="editPunto">Editar</f7-actions-button>
         <f7-actions-button color="red" @click="eliminarPuntos">Eliminar</f7-actions-button>
         <f7-actions-button color="red">Cancel</f7-actions-button>
@@ -148,14 +148,14 @@ export default {
         nombre: "",
         latitude:"",
         longitude:"",
-        direccion:""
+        direccion:"",
+        mostrar:false,
       },
       ubication:false,
       popupPuntos:false,
       popupGuardarPunto:false,
       puntos_firebase:null,
-      punto_selected:null,
-      markers:[]
+      punto_selected:null
     };
   },
   mounted(){
@@ -168,13 +168,24 @@ export default {
     this.db.ref("/puntos/" + usuario.uid).on('value', snapshot => this.cargarPuntos(snapshot.val()));
   },
   methods:{
+    showHidePunto(punto){
+      console.log("Punto", punto)
+      let objeto = JSON.parse( JSON.stringify( punto ) );
+      objeto.mostrar = !objeto.mostrar;
+      let usuario = auth().currentUser;
+        this.db.ref("/puntos/" + usuario.uid + "/" + objeto.key).set(objeto).then(()=>{
+          this.fitBounds();
+        });
+    },
     fitBounds(){
       var b = new google.maps.LatLngBounds();
       if(this.mapa.position){
         b.extend(this.mapa.position);
       }
-      this.markers.map((item)=>{
-        b.extend(item);
+      this.puntos_firebase.map((item)=>{
+        if(item.mostrar){
+          b.extend({lat:item.latitude, lng:item.longitude});
+        }
       });
       this.$refs.googleMap.fitBounds(b);
     },
@@ -189,10 +200,10 @@ export default {
       };
     },
     clearMarkers(){
-      this.$f7.dialog.confirm('Quieres quitar todos los marcadores?', ()=> {
-        this.markers = [];
-        this.fitBounds();
-      });
+      // this.$f7.dialog.confirm('Quieres quitar todos los marcadores?', ()=> {
+      //   this.markers = [];
+      //   this.fitBounds();
+      // });
     },
     editarPunto(){
       console.log("editando punto")
@@ -212,12 +223,13 @@ export default {
         direccion:""
       }
     },
-    marcarPunto(){
+    fijarPunto(){
       console.log("marcar Punto", this.punto_selected);
       let {latitude, longitude} = this.punto_selected;
-      this.markers.push({lat:latitude, lng:longitude});
+      this.mapa.center_map.lat = latitude;
+      this.mapa.center_map.lng = longitude;
       this.popupPuntos = false;
-      this.fitBounds();
+      // this.fitBounds();
     },
     editPunto(){
       console.log("Editar Punto");
@@ -227,12 +239,13 @@ export default {
       this.popupPuntos = false;
       this.popupGuardarPunto = true;
     },
-    eliminarPunto(index){
-      console.log("Eliminando Puntos");
-      this.$f7.dialog.confirm('Quieres quitar este punto?', ()=> {
-      this.markers.splice(index,1)
-      this.fitBounds();
-      });
+    eliminarPunto(marker){
+      console.log("Eliminando Puntos", marker);
+      console.log(this.$refs);
+      console.log(marker);
+      console.log(this.$refs[marker]);
+      let toggle = this.$refs[marker][0];
+      toggle.checked = false;
     },
     eliminarPuntos(){
       console.log("Eliminando")
@@ -262,7 +275,8 @@ export default {
         for(let key in puntos){
           console.log("puntos[key]", puntos[key])
           let {latitude, longitude, nombre, direccion} = puntos[key];
-          this.puntos_firebase.push({latitude, longitude, nombre, direccion, key});
+          let mostrar = (puntos[key]["mostrar"])?puntos[key]["mostrar"]:false;
+          this.puntos_firebase.push({latitude, longitude, nombre, direccion, key, mostrar});
         }
         this.puntos_firebase.reverse();
       }
@@ -308,10 +322,6 @@ export default {
     getWatchLocation(){
         navigator.geolocation.watchPosition((position)=>{
         console.log("Position",position);
-        if(!this.isWatchPosition){
-          this.isWatchPosition = true;
-          this.$f7.dialog.close();
-        }
         let {latitude, longitude} = position.coords; 
         this.mapa.position = {lat:latitude, lng: longitude};
         this.mapa.zoom_map = 18;
@@ -338,6 +348,10 @@ export default {
         this.mapa.center_map.lng = longitude;
         this.mapa.position = {lat:latitude, lng: longitude};
         this.mapa.zoom_map = 18;
+        if(!this.isWatchPosition){
+          this.isWatchPosition = true;
+          this.$f7.dialog.close();
+        }
         this.getWatchLocation();
       }, (error)=>{
             console.log('Error Current Position: '    + error.code    + '\n' +
@@ -345,11 +359,11 @@ export default {
               if(error.code == 3){
             setTimeout(()=>{
               this.getLocation();
-            },5000);
+            },1000);
           }
       },{
           enableHighAccuracy: true,
-          timeout: 10000,
+          timeout: 3000,
           maximumAge: 0
         });
     }
