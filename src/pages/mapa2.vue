@@ -10,17 +10,24 @@
         </f7-nav-left>
         <f7-nav-title>Mapa</f7-nav-title>
         <f7-nav-right>
-                          
+          <f7-fab-button class="btn" v-if="clickPosition" @click="clickPosition = null" >
+<f7-icon f7="close_round_fill" ></f7-icon>
+              </f7-fab-button>  
+              <f7-fab-button class="btn" round @click="openSavePunto" >
+<f7-icon f7="add_round_fill" ></f7-icon>
+              </f7-fab-button>    
         </f7-nav-right>
     </f7-navbar>
       <GmapMap v-if="get_map"
                         ref="googleMap"
                         :center="mapa.center_map"
+                        @click="clickMap"
                         :zoom="mapa.zoom_map"
                         :options="{minZoom: 5, maxZoom: 19}"
                         :style="'width: auto; height:' + this.height +'px'"
                 >
                 <GmapMarker v-if="mapa.position" :position="mapa.position" :icon="pinSymbol('#007aff')"/>
+                <GmapMarker v-if="clickPosition" :draggable="true" :position="clickPosition" :icon="pinSymbol('#000000')"/>
                 <GmapMarker 
                 v-if="puntos_firebase && marker.mostrar" v-for="(marker, index) in puntos_firebase" 
                 :clickable="true"
@@ -59,14 +66,17 @@
                 :text="punto.direccion"
               >
               <f7-fab-button slot="media" color="red" @click="selectPunto(punto)">
-                <f7-icon f7="help_fill" ></f7-icon>
+                <f7-icon f7="gear_fill" ></f7-icon>
+              </f7-fab-button>
+
+              <f7-fab-button slot="after" 
+              :color="(punto.mostrar)?'green':'red'"
+               @click="showHidePunto(puntos_firebase[index])">
+                <f7-icon f7="circle_fill" >
+                  
+                </f7-icon>
               </f7-fab-button>
               
-              <f7-fab-button slot="after" class="button button-fill button-round"
-              :color="(punto.mostrar)?'green':'red'"
-                @click="showHidePunto(puntos_firebase[index])">
-                <f7-icon f7="eye_fill" ></f7-icon>
-              </f7-fab-button>
               </f7-list-item>
           </f7-list>
           </f7-card-content>
@@ -159,7 +169,8 @@ export default {
       popupPuntos:false,
       popupGuardarPunto:false,
       puntos_firebase:null,
-      punto_selected:null
+      punto_selected:null,
+      clickPosition:null
     };
   },
   mounted(){
@@ -227,7 +238,8 @@ export default {
         nombre: "",
         latitude:"",
         longitude:"",
-        direccion:""
+        direccion:"",
+        mostrar:false,
       }
     },
     fijarPunto(){
@@ -275,6 +287,12 @@ export default {
       this.punto_selected = {nombre, direccion, latitude, longitude, key};
       this.$refs.actionsOneGroup.open();
     },
+    clickMap(position){
+      this.clickPosition = {
+        lat:position.latLng.lat(),
+        lng:position.latLng.lng()
+      }
+    },
     cargarPuntos(puntos){
       console.log("Cargando Puntos");
       this.puntos_firebase = [];
@@ -290,17 +308,19 @@ export default {
       }
     },
     openSavePunto(){
-      if(!this.mapa.position){
-        this.$f7.dialog.alert('No se tiene una ubicacion, espere por favor', "Sin Ubicacion");
-        return;
+      if(!this.clickPosition){
+        if(!this.mapa.position){
+          this.$f7.dialog.alert('No se tiene una ubicacion, espere por favor', "Sin Ubicacion");
+          return;
+        }
       }
       
-      let {lat, lng} = this.mapa.position;
+      let {lat, lng} = (this.clickPosition)?this.clickPosition:this.mapa.position;
       this.form.latitude = lat;
       this.form.longitude = lng;
       var geocoder = new google.maps.Geocoder;
 
-      geocoder.geocode({'location': this.mapa.position}, (results,status)=>{ 
+      geocoder.geocode({'location': {lat, lng}}, (results,status)=>{ 
         console.log("Cargando GeoCoder")
 				if (status === 'OK') {
 					if (results[0]) {
@@ -317,7 +337,9 @@ export default {
       this.popupGuardarPunto = true;
     },
     savePunto(){
+      this.clickPosition = null;
       console.log("Guardando Puntos", this.form);
+      this.form.mostrar = true;
       let usuario = auth().currentUser;
       this.db.ref("/puntos/"+ usuario.uid).push(this.form).then(()=>{
               this.popupGuardarPunto = false;
@@ -382,3 +404,10 @@ export default {
   }
 };
 </script>
+
+<style>
+  .btn{
+    margin-right:12px;
+    padding: 2px;
+  }
+</style>
