@@ -152,6 +152,7 @@ export default {
       db:null,
       get_map:true,
       isWatchPosition:false,
+      watch_position:null,
       mapa:{
           center_map:{lat:24.083304, lng:-102.339398},
           position:null,
@@ -177,7 +178,8 @@ export default {
   mounted(){
     console.log("Montando Mapa");
     //this.$f7.dialog.preloader("Obteniendo ubicacion...");
-    this.getLocation();
+    //this.getLocation();
+    this.getWatchLocation();
     this.db= database();
     let usuario = auth().currentUser;
     console.log("Perfil Usuario", usuario);
@@ -352,18 +354,33 @@ export default {
 
     },
     getWatchLocation(){
-        navigator.geolocation.watchPosition((position)=>{
+        this.watch_position = navigator.geolocation.watchPosition((position)=>{
         console.log("Position",position);
         let {latitude, longitude} = position.coords; 
         this.mapa.position = {lat:latitude, lng: longitude};
-        this.mapa.zoom_map = 18;
+        if(!this.ubication){
+          this.ubication = true;
+          let {latitude, longitude} = position.coords; 
+          this.mapa.center_map.lat = latitude;
+          this.mapa.center_map.lng = longitude;
+          this.mapa.zoom_map = 18;
+          if(!this.isWatchPosition){
+            this.isWatchPosition = true;
+            this.$f7.dialog.close();
+          }
+        }
         }, (error)=>{
           console.log("Error Watch");
           console.log(error);
+          this.$f7.toast.create({
+                text: 'Code: ' + error.code+
+                ' Message: ' + error.message,
+                closeTimeout: 2000,
+              }).open();
         }, 
         {
           enableHighAccuracy: true,
-          timeout: 3000,
+          timeout: 20000,
           maximumAge: 500
         }
       );
