@@ -24,7 +24,7 @@
                 <GmapMarker 
                 v-if="puntos_firebase && marker.mostrar" v-for="(marker, index) in puntos_firebase" 
                 :clickable="true"
-                @click="eliminarPunto('toggle-'+marker.key)"
+                @click="showHidePunto(marker)"
                 :key="index" 
                 :position="{lat:marker.latitude, lng:marker.longitude}"/>
       </GmapMap>
@@ -62,7 +62,7 @@
                 <f7-icon f7="help_fill" ></f7-icon>
               </f7-fab-button>
               
-              <f7-toggle slot="after" :value="0" :ref="'toggle-'+ punto.key" :checked="punto.mostrar" @toggle:change="showHidePunto(punto)"></f7-toggle>
+              <f7-toggle slot="after" :value="0" :ref="'toggle-'+ punto.key" :checked="punto.mostrar" @toggle:change="showHidePunto(puntos_firebase[index])"></f7-toggle>
               </f7-list-item>
           </f7-list>
           </f7-card-content>
@@ -165,16 +165,18 @@ export default {
     this.db= database();
     let usuario = auth().currentUser;
     console.log("Perfil Usuario", usuario);
-    this.db.ref("/puntos/" + usuario.uid).on('value', snapshot => this.cargarPuntos(snapshot.val()));
+    this.syncData();
   },
   methods:{
     showHidePunto(punto){
       console.log("Punto", punto)
-      let objeto = JSON.parse( JSON.stringify( punto ) );
-      objeto.mostrar = !objeto.mostrar;
+      punto.mostrar = !punto.mostrar;
       let usuario = auth().currentUser;
-        this.db.ref("/puntos/" + usuario.uid + "/" + objeto.key).set(objeto).then(()=>{
+        this.db.ref("/puntos/" + usuario.uid + "/" + punto.key).set(punto).then(()=>{
           this.fitBounds();
+          setTimeout(()=>{
+            //this.syncData()
+          },300)
         });
     },
     fitBounds(){
@@ -366,6 +368,10 @@ export default {
           timeout: 3000,
           maximumAge: 0
         });
+    },
+    syncData(){
+      let usuario = auth().currentUser;
+      this.db.ref("/puntos/" + usuario.uid).once('value', snapshot => this.cargarPuntos(snapshot.val()));
     }
   }
 };
