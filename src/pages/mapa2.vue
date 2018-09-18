@@ -170,7 +170,8 @@ export default {
       popupGuardarPunto:false,
       puntos_firebase:null,
       punto_selected:null,
-      clickPosition:null
+      clickPosition:null,
+      timeLocation:1000,
     };
   },
   mounted(){
@@ -181,6 +182,7 @@ export default {
     let usuario = auth().currentUser;
     console.log("Perfil Usuario", usuario);
     this.syncData();
+    
   },
   methods:{
     showHidePunto(punto){
@@ -386,10 +388,17 @@ export default {
       }, (error)=>{
             console.log('Error Current Position: '    + error.code    + '\n' +
               'message: ' + error.message + '\n');
+              
+              this.$f7.toast.create({
+                text: 'Code: ' + error.code+
+                ' Message: ' + error.message + ' Time: ' + (this.timeLocation/1000),
+                closeTimeout: 2000,
+              }).open();
+              this.timeLocation += 2000;
               if(error.code == 3){
             setTimeout(()=>{
               this.getLocation();
-            },1000);
+            },this.timeLocation);
           }
       },{
           enableHighAccuracy: true,
