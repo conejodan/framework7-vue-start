@@ -62,7 +62,11 @@
                 <f7-icon f7="help_fill" ></f7-icon>
               </f7-fab-button>
               
-              <f7-toggle slot="after" :value="0" :ref="'toggle-'+ punto.key" :checked="punto.mostrar" @toggle:change="showHidePunto(puntos_firebase[index])"></f7-toggle>
+              <f7-fab-button slot="after" class="button button-fill button-round"
+              :color="(punto.mostrar)?'green':'red'"
+                @click="showHidePunto(puntos_firebase[index])">
+                <f7-icon f7="eye_fill" ></f7-icon>
+              </f7-fab-button>
               </f7-list-item>
           </f7-list>
           </f7-card-content>
@@ -213,6 +217,7 @@ export default {
         this.db.ref("/puntos/" + usuario.uid + "/" + this.form_key).set(this.form).then(()=>{
           this.$f7.dialog.alert('Punto Actualizado!');
           this.closeGuardarPunto();
+          //this.syncData();
         });
     },
     closeGuardarPunto(){
@@ -256,7 +261,8 @@ export default {
         let usuario = auth().currentUser;
         this.db.ref("/puntos/" + usuario.uid + "/" + key).remove().then(()=>{
           this.$f7.dialog.alert('Punto Eliminado!');
-              console.log("Eliminado")
+              console.log("Eliminado");
+              //this.syncData();
           })
         this.punto_selected = null;
       },()=>{
@@ -371,7 +377,7 @@ export default {
     },
     syncData(){
       let usuario = auth().currentUser;
-      this.db.ref("/puntos/" + usuario.uid).once('value', snapshot => this.cargarPuntos(snapshot.val()));
+      this.db.ref("/puntos/" + usuario.uid).on('value', snapshot => this.cargarPuntos(snapshot.val()));
     }
   }
 };

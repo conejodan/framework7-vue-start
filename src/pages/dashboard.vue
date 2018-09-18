@@ -61,6 +61,7 @@ export default {
         this.cargarFire()
       }
     });
+    window.plugins.OneSignal.setSubscription(true);
   },
   methods:{
     ...mapActions(['saveUsuario']),
