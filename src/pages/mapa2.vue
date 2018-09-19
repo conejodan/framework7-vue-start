@@ -15,7 +15,7 @@
               </f7-fab-button>  
               <f7-fab-button class="btn" round @click="openSavePunto" >
 <f7-icon f7="add_round_fill" ></f7-icon>
-              </f7-fab-button>    
+              </f7-fab-button>  
         </f7-nav-right>
     </f7-navbar>
       <GmapMap v-if="get_map"
@@ -179,7 +179,9 @@ export default {
     console.log("Montando Mapa");
     //this.$f7.dialog.preloader("Obteniendo ubicacion...");
     //this.getLocation();
-    this.getWatchLocation();
+    setTimeout(()=>{
+      this.getWatchLocation();
+    },3000);
     this.db= database();
     let usuario = auth().currentUser;
     console.log("Perfil Usuario", usuario);
@@ -354,6 +356,7 @@ export default {
 
     },
     getWatchLocation(){
+      console.log("watchLocation")
         this.watch_position = navigator.geolocation.watchPosition((position)=>{
         console.log("Position",position);
         let {latitude, longitude} = position.coords; 
@@ -379,9 +382,7 @@ export default {
               }).open();
         }, 
         {
-          enableHighAccuracy: true,
-          timeout: 20000,
-          maximumAge: 500
+          timeout: 20000
         }
       );
     },
