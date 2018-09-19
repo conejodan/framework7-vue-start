@@ -179,9 +179,7 @@ export default {
     console.log("Montando Mapa");
     //this.$f7.dialog.preloader("Obteniendo ubicacion...");
     //this.getLocation();
-    setTimeout(()=>{
-      this.getWatchLocation();
-    },3000);
+    this.getWatchLocation();
     this.db= database();
     let usuario = auth().currentUser;
     console.log("Perfil Usuario", usuario);
@@ -382,7 +380,7 @@ export default {
               }).open();
         }, 
         {
-          timeout: 20000
+          timeout: 10000
         }
       );
     },

@@ -61,7 +61,16 @@ const baseApp = new Vue({
     name: 'Framework7', // App name
     theme: 'auto', // Automatic theme detection
     // App routes
-    routes: Routes
+    routes: Routes,
+    touch: {
+      tapHold: true,
+      fastClicks:true
+    },
+    on:{
+      taphold: function(tap){
+        console.log("tapHold");
+      }
+    }
   },
   // Register App Component
   components: {

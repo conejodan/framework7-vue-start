@@ -10,18 +10,23 @@
         </f7-nav-left>
         <f7-nav-title>{{title}}</f7-nav-title>
         <f7-nav-right>
-            <f7-fab-button class="btn" round @click="showForm = true" >
-<f7-icon f7="add_round_fill" ></f7-icon>
-              </f7-fab-button>
+          <f7-fab-button class="btn" round @click="showComplete = !showComplete" >
+            <f7-icon f7="bookmark_fill" ></f7-icon>
+          </f7-fab-button>
+
+          <f7-fab-button class="btn" v-if="showComplete" round @click="showForm = true" >
+            <f7-icon f7="add_round_fill" ></f7-icon>
+          </f7-fab-button>
         </f7-nav-right>
     </f7-navbar>
     <f7-block inner>
       <f7-list media-list>
           <f7-list-item v-for="(todo, index) in todo_list_firebase" :key="index"
-          
+            v-if="todo.status != showComplete"
             :title="todo.title"
             :subtitle="todo.subtitle"
             :text="todo.text"
+            @taphold.native="editarTarea(todo)"
           >
 
           <f7-checkbox
@@ -32,7 +37,7 @@
           </f7-list-item>
       </f7-list>
     </f7-block>
-    <f7-popup class="demo-popup" :opened="showForm" @popup:closed="showForm = false">
+    <f7-popup class="demo-popup" :opened="showForm" @popup:closed="closeForm">
       <f7-page>
         <f7-navbar title="Tarea">
           <f7-nav-right>
@@ -62,7 +67,8 @@
           </f7-list>
           <f7-row>
             <f7-col>
-                <f7-button fill @click="saveTarea">Guardar Punto</f7-button>
+                <f7-button v-if="!form_key" fill @click="saveTarea">Guardar Punto</f7-button>
+                <f7-button v-else fill @click="updateTarea">Editar Punto</f7-button>
             </f7-col>
           </f7-row>
         </f7-block>
@@ -90,8 +96,9 @@ export default {
       loaded_firebase:true,
       todo_list_firebase:[],
       showForm:false,
-
-      form:this.clonar(form_init)
+      showComplete:true,
+      form:this.clonar(form_init),
+      form_key:""
     };
   },
   mounted(){
@@ -103,7 +110,24 @@ export default {
     clonar(obj){
       return JSON.parse( JSON.stringify( obj ) );
     },
+    updateTarea(){
+      console.log("updateTarea")
+      let usuario = auth().currentUser;
+        let {title, subtitle, text, status} = this.form;
+        this.db.ref("/todo/" + usuario.uid + "/" + this.form_key).set({title, subtitle, text, status}).then(()=>{
+          console.log("Actualizado");
+          this.closeForm();
+        });
+    },
+    editarTarea(tarea){
+      console.log("Editando tarea", tarea);
+      this.showForm = true;
+      let {title,subtitle,text,status,key} = tarea;
+      this.form = {title,subtitle,text,status};
+      this.form_key = key;
+    },
     changeStatus(todo){
+      console.log("changeStatus")
       if(this.loaded_firebase){
         console.log("Cambiando status de ", todo)
         let usuario = auth().currentUser;
@@ -122,6 +146,11 @@ export default {
               this.$f7.dialog.alert('Tarea Guardado!');
               this.form = this.clonar(form_init)
           });
+    },
+    closeForm(){
+      this.showForm = false;
+      this.form = this.clonar(form_init);
+      this.form_key = "";
     },
     cargarLista(tareas){
       console.log("Cargando ");
