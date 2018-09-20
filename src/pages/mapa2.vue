@@ -179,8 +179,8 @@ export default {
   mounted(){
     console.log("Montando Mapa");
     //this.$f7.dialog.preloader("Obteniendo ubicacion...");
-    //this.getLocation();
-    this.getWatchLocation();
+    this.getLocation();
+    //this.getWatchLocation();
     this.db= database();
     let usuario = auth().currentUser;
     console.log("Perfil Usuario", usuario);
@@ -423,12 +423,10 @@ export default {
               if(error.code == 3){
             setTimeout(()=>{
               this.getLocation();
-            },this.timeLocation);
+            },1000);
           }
       },{
-          enableHighAccuracy: true,
-          timeout: 3000,
-          maximumAge: 0
+          timeout: 20000
         });
     },
     syncData(){
