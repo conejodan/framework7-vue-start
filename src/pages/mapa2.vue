@@ -88,6 +88,7 @@
         <f7-actions-label>Acciones</f7-actions-label>
         <f7-actions-button bold @click="fijarPunto">Fijar en Mapa</f7-actions-button>
         <f7-actions-button @click="editPunto">Editar</f7-actions-button>
+        <f7-actions-button @click="compartir">Compartir Punto</f7-actions-button>
         <f7-actions-button color="red" @click="eliminarPuntos">Eliminar</f7-actions-button>
         <f7-actions-button color="red">Cancel</f7-actions-button>
       </f7-actions-group>
@@ -245,6 +246,14 @@ export default {
         direccion:"",
         mostrar:false,
       }
+    },
+    compartir(){
+      let {nombre, direccion, latitude, longitude, key} = this.punto_selected;
+      window.plugins.socialsharing.share(
+        nombre + '\n' +
+        latitude + ',' + longitude + '\n' +
+        direccion
+        );
     },
     fijarPunto(){
       console.log("marcar Punto", this.punto_selected);

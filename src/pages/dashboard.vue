@@ -34,6 +34,16 @@
           <f7-button fill @click="deleteFile">Eliminar Archivo</f7-button>
         </f7-col>
       </f7-row>
+      <f7-row tag="p">
+        <f7-col>
+          <f7-button fill @click="compartir">Compartir!!!</f7-button>
+        </f7-col>
+      </f7-row>
+      <f7-row tag="p">
+        <f7-col>
+          <f7-button fill @click="compartir2">Compartir2!!!</f7-button>
+        </f7-col>
+      </f7-row>
     </f7-block>
   </f7-page>
 </template>
@@ -65,6 +75,14 @@ export default {
   },
   methods:{
     ...mapActions(['saveUsuario']),
+    compartir(){
+      console.log("Compartirlo");
+      navigator.plugins.socialsharing.share('Message only');
+    },
+    compartir2(){
+      console.log("Compartirlo");
+      window.plugins.socialsharing.share('Message only');
+    },
     deleteFile(){
       console.log("Eliminando archivo");
       let storageRef = storage().ref();
