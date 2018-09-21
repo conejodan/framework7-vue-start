@@ -92,9 +92,9 @@
     </platform>
     <preference name="DisallowOverscroll" value="true" />
     <preference name="StatusBarStyle" value="default" />
-    <preference name="FadeSplashScreenDuration" value="300" />
+    <preference name="FadeSplashScreenDuration" value="100" />
     <preference name="SplashScreen" value="screen" />
-    <preference name="SplashScreenDelay" value="4000" />
+    <preference name="SplashScreenDelay" value="5000" />
     <preference name="SplashMaintainAspectRatio" value="true" />
     <preference name="phonegap-version" value="cli-6.1.0" />
     <plugin name="cordova-plugin-geolocation" spec="^4.0.1" />

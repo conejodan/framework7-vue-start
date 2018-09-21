@@ -255,7 +255,7 @@ export default {
       //   latitude + ',' + longitude + '\n' +
       //   direccion
       window.plugins.socialsharing.share(
-        nombre,null,null,"https://www.google.com/maps/dir/"+ latitude +","+ longitude
+        nombre + '\n' + direccion + '\n',null,null,"https://maps.google.com/maps?q="+ latitude +"%2C"+ longitude +"&z=17&hl=es"
         );
     },
     fijarPunto(){
