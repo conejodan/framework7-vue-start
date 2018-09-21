@@ -14,7 +14,7 @@
 <f7-icon f7="close_round_fill" ></f7-icon>
               </f7-fab-button>  
               <f7-fab-button class="btn" round @click="openSavePunto" >
-<f7-icon f7="add_round_fill" ></f7-icon>
+<f7-icon material="room" size="30" ></f7-icon>
               </f7-fab-button>  
         </f7-nav-right>
     </f7-navbar>
@@ -31,12 +31,12 @@
                 <GmapMarker 
                 v-if="puntos_firebase && marker.mostrar" v-for="(marker, index) in puntos_firebase" 
                 :clickable="true"
-                @click="showHidePunto(marker)"
+                @click="selectPunto(marker)"
                 :key="index" 
                 :position="{lat:marker.latitude, lng:marker.longitude}"/>
       </GmapMap>
     <f7-fab position="left-bottom" slot="fixed">
-      <f7-icon f7="add"></f7-icon>
+      <f7-icon material="settings" size="34"></f7-icon>
       <f7-icon f7="arrow_down" ></f7-icon>
       <f7-fab-buttons position="top">
         <f7-fab-button label="Ver puntos" fab-close color="orange" @click="popupPuntos = true">
@@ -85,12 +85,14 @@
     </f7-popup>
     <f7-actions ref="actionsOneGroup">
       <f7-actions-group>
-        <f7-actions-label>Acciones</f7-actions-label>
+        <f7-actions-label>Acciones de {{(punto_selected)?punto_selected.nombre:''}}</f7-actions-label>
         <f7-actions-button bold @click="fijarPunto">Fijar en Mapa</f7-actions-button>
         <f7-actions-button @click="editPunto">Editar</f7-actions-button>
         <f7-actions-button @click="compartir">Compartir Punto</f7-actions-button>
         <f7-actions-button color="red" @click="eliminarPuntos">Eliminar</f7-actions-button>
-        <f7-actions-button color="red">Cancel</f7-actions-button>
+      </f7-actions-group>
+      <f7-actions-group>
+        <f7-actions-button bg="red">Cancel</f7-actions-button>
       </f7-actions-group>
     </f7-actions>
     <f7-popup class="demo-popup" :opened="popupGuardarPunto" @popup:closed="closeGuardarPunto">
@@ -249,18 +251,26 @@ export default {
     },
     compartir(){
       let {nombre, direccion, latitude, longitude, key} = this.punto_selected;
+      // nombre + '\n' +
+      //   latitude + ',' + longitude + '\n' +
+      //   direccion
       window.plugins.socialsharing.share(
-        nombre + '\n' +
-        latitude + ',' + longitude + '\n' +
-        direccion
+        nombre,null,null,"https://www.google.com/maps/dir/"+ latitude +","+ longitude
         );
     },
     fijarPunto(){
       console.log("marcar Punto", this.punto_selected);
-      let {latitude, longitude} = this.punto_selected;
-      this.mapa.center_map.lat = latitude;
-      this.mapa.center_map.lng = longitude;
-      this.popupPuntos = false;
+      let {latitude, longitude, mostrar} = this.punto_selected;
+      if(!mostrar){
+        this.showHidePunto(this.punto_selected);
+      }
+      setTimeout(()=>{
+        this.mapa.center_map.lat = latitude;
+        this.mapa.center_map.lng = longitude;
+        this.mapa.zoom_map = 22;
+        this.popupPuntos = false;
+      },400);
+      
       // this.fitBounds();
     },
     editPunto(){
@@ -430,8 +440,11 @@ export default {
         });
     },
     syncData(){
-      let usuario = auth().currentUser;
+      setTimeout(()=>{
+let usuario = auth().currentUser;
       this.db.ref("/puntos/" + usuario.uid).on('value', snapshot => this.cargarPuntos(snapshot.val()));
+      },300);
+      
     }
   }
 };

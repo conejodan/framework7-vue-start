@@ -22,11 +22,11 @@
     </f7-panel>
 
     <!-- Main View 
-    <MyAdmob />
+    
     <BackgroundMode />
     -->
     <f7-view id="main-view" url="/" main></f7-view>
-    
+    <MyAdmob />
     <AppVersion />
     
 

@@ -21,12 +21,12 @@ export default {
     },
     printVersion(){
         if(this.versionNumber && this.versionCode && this.packageName && this.appName){
-            alert(
-                "App Name " + this.appName + "\n" +
-                "Package Name " + this.packageName + "\n" +
-                "Version Number " + this.versionNumber + "\n" +
-                "Version Code " + this.versionCode + "\n" 
-                );
+          this.$f7.dialog.alert(
+            "App Name " + this.appName + "\n" +
+            "Package Name " + this.packageName + "\n" +
+            "Version Number " + this.versionNumber + "\n" +
+            "Version Code " + this.versionCode
+          );
         }
     },
     appVersion(){
