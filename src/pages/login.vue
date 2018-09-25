@@ -9,7 +9,7 @@
         </f7-list-item>
         <f7-list-item>
           <f7-label>Contraseña</f7-label>
-          <f7-input type="password" :value="password" @input="password = $event.target.value" placeholder="Coloca tu contraseña" clear-button @keypress.13="signIn"></f7-input>
+          <f7-input type="password" :value="password" @input="password = $event.target.value" placeholder="Coloca tu contraseña" clear-button @keypress="pressedKey"></f7-input>
         </f7-list-item>
       </f7-list>
       <f7-row tag="p">

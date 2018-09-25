@@ -10,12 +10,25 @@
         </f7-nav-left>
         <f7-nav-title>Mapa</f7-nav-title>
         <f7-nav-right>
-          <f7-fab-button class="btn" v-if="clickPosition" @click="clickPosition = null" >
-<f7-icon f7="close_round_fill" ></f7-icon>
+              <f7-fab-button v-if="fitBoundsPress" class="btn" round @click="myPosition" >
+<f7-icon material="gps_fixed" size="30" ></f7-icon>
+              </f7-fab-button>
+
+              <f7-fab-button v-if="!fitBoundsPress" class="btn" round @click="fitBounds" >
+<f7-icon material="gps_not_fixed" size="30" ></f7-icon>
+              </f7-fab-button>
+
+              <f7-fab-button class="btn" 
+              v-if="clickPosition" @click="clickPosition = null" >
+                <f7-icon f7="close_round_fill" ></f7-icon>
               </f7-fab-button>  
+
               <f7-fab-button class="btn" round @click="openSavePunto" >
-<f7-icon material="room" size="30" ></f7-icon>
-              </f7-fab-button>  
+<f7-icon material="add_location" size="30" ></f7-icon>
+              </f7-fab-button>
+              <f7-fab-button class="btn" round @click="compartirUbicacion" >
+<f7-icon material="near_me" size="30" ></f7-icon>
+              </f7-fab-button>
         </f7-nav-right>
     </f7-navbar>
       <GmapMap v-if="get_map"
@@ -31,7 +44,7 @@
                 <GmapMarker 
                 v-if="puntos_firebase && marker.mostrar" v-for="(marker, index) in puntos_firebase" 
                 :clickable="true"
-                @click="selectPunto(marker)"
+                @click="selectPuntoMapa(marker)"
                 :key="index" 
                 :position="{lat:marker.latitude, lng:marker.longitude}"/>
       </GmapMap>
@@ -83,13 +96,25 @@
         </f7-block>
       </f7-page>
     </f7-popup>
+    <f7-actions ref="actionsMapa">
+      <f7-actions-group>
+        <f7-actions-label>Acciones de {{(punto_selected)?punto_selected.nombre:''}}</f7-actions-label>
+        <f7-actions-button bold @click="fijarPuntoMapa">Fijar en Mapa</f7-actions-button>
+        <f7-actions-button @click="editPunto">Editar</f7-actions-button>
+        <f7-actions-button @click="compartir">Compartir Punto</f7-actions-button>
+        <f7-actions-button color="red" @click="eliminarPuntoMapa">Ocultar del Mapa</f7-actions-button>
+      </f7-actions-group>
+      <f7-actions-group>
+        <f7-actions-button bg="red">Cancel</f7-actions-button>
+      </f7-actions-group>
+    </f7-actions>
     <f7-actions ref="actionsOneGroup">
       <f7-actions-group>
         <f7-actions-label>Acciones de {{(punto_selected)?punto_selected.nombre:''}}</f7-actions-label>
         <f7-actions-button bold @click="fijarPunto">Fijar en Mapa</f7-actions-button>
         <f7-actions-button @click="editPunto">Editar</f7-actions-button>
         <f7-actions-button @click="compartir">Compartir Punto</f7-actions-button>
-        <f7-actions-button color="red" @click="eliminarPuntos">Eliminar</f7-actions-button>
+        <f7-actions-button color="red" @click="eliminarPuntos">Eliminar Punto</f7-actions-button>
       </f7-actions-group>
       <f7-actions-group>
         <f7-actions-button bg="red">Cancel</f7-actions-button>
@@ -156,6 +181,7 @@ export default {
       get_map:true,
       isWatchPosition:false,
       watch_position:null,
+      fitBoundsPress:false,
       mapa:{
           center_map:{lat:24.083304, lng:-102.339398},
           position:null,
@@ -190,6 +216,21 @@ export default {
     
   },
   methods:{
+    myPosition(){
+      console.log("myPosition", this.mapa.center_map, this.mapa.position)
+      if(this.mapa.position){
+        let {lat, lng} = this.mapa.position;
+        this.mapa.center_map = {lat:0, lng:0};
+        this.mapa.zoom_map = 19;
+        setTimeout(()=>{
+          this.fitBoundsPress = false;
+          this.mapa.center_map = {lat, lng};
+          this.mapa.zoom_map = 18;
+        },200)
+        
+        console.log("myPosition2", this.mapa.center_map, this.mapa.position)
+      }
+    },
     showHidePunto(punto){
       console.log("Punto", punto)
       punto.mostrar = !punto.mostrar;
@@ -202,6 +243,7 @@ export default {
         });
     },
     fitBounds(){
+      this.fitBoundsPress = true;
       var b = new google.maps.LatLngBounds();
       if(this.mapa.position){
         b.extend(this.mapa.position);
@@ -249,6 +291,12 @@ export default {
         mostrar:false,
       }
     },
+    compartirUbicacion(){
+      let {lat, lng} = this.mapa.position;
+      window.plugins.socialsharing.share(
+        'Mi Ubicacion \n',null,null,"https://maps.google.com/maps?q="+ lat +"%2C"+ lng +"&z=17&hl=es"
+        );
+    },
     compartir(){
       let {nombre, direccion, latitude, longitude, key} = this.punto_selected;
       // nombre + '\n' +
@@ -257,6 +305,20 @@ export default {
       window.plugins.socialsharing.share(
         nombre + '\n' + direccion + '\n',null,null,"https://maps.google.com/maps?q="+ latitude +"%2C"+ longitude +"&z=17&hl=es"
         );
+    },
+    fijarPuntoMapa(){
+      console.log("fijarPunto Mapa", this.punto_selected);
+      let {latitude, longitude} = this.punto_selected;
+      this.mapa.center_map.lat = latitude;
+        this.mapa.center_map.lng = longitude;
+        this.mapa.zoom_map = 21;
+      setTimeout(()=>{
+        
+        this.mapa.zoom_map = 22;
+        this.popupPuntos = false;
+      },500);
+      
+      // this.fitBounds();
     },
     fijarPunto(){
       console.log("marcar Punto", this.punto_selected);
@@ -281,6 +343,23 @@ export default {
       this.popupPuntos = false;
       this.popupGuardarPunto = true;
     },
+    eliminarPuntoMapa(){
+      console.log("eliminarPuntoMapa")
+      let map_index = 0;
+      this.puntos_firebase.map((item,index)=>{
+        console.log("Item", item);
+        console.log("Index", index);
+        console.log("Keys", this.punto_selected.key, item.key);
+        if(this.punto_selected.key == item.key){
+          this.showHidePunto(item)
+        }
+      });
+      if(map_index){
+        console.log("mapIndex", map_index);
+        //this.puntos_firebase.splice(map_index,1);
+      }
+      
+    },
     eliminarPunto(marker){
       console.log("Eliminando Puntos", marker);
       console.log(this.$refs);
@@ -303,6 +382,12 @@ export default {
       },()=>{
         this.punto_selected = null;
       });
+    },
+    selectPuntoMapa(punto){
+      console.log("Seleccionando", punto)
+      let {nombre, direccion, latitude, longitude, key} = punto;
+      this.punto_selected = {nombre, direccion, latitude, longitude, key};
+      this.$refs.actionsMapa.open();
     },
     selectPunto(punto){
       console.log("Seleccionando", punto)
