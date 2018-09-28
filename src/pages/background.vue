@@ -85,7 +85,7 @@ export default {
             this.veces = 0;
             cordova.plugins.backgroundMode.setDefaults({ 
               title: 'Ancle - Rastreo', 
-              text: 'Pendiente....', 
+              text: 'En viaje....', 
               resume: true, 
               hidden: false, 
               silent: false 
@@ -100,10 +100,10 @@ export default {
               console.log(longitude);
               this.veces += 1;
               console.log(this.veces);
-              let distancia = this.calculateDistance(position.coords, {latitude:18.0232266,longitude:-92.9022477})
+              let distancia = this.calculateDistance(position.coords, {latitude:18.00105,longitude:-92.9494865})
               console.log("Distancia");
               console.log(distancia);
-              if(this.veces > 10){
+              if(distancia < 200){
                 navigator.vibrate(3000);
                 console.log("BGM::WakeUp");
                 console.log("BGM::WakeUp");
@@ -134,28 +134,28 @@ export default {
         let distance = 0;
         if(start && end){
             let R = 6371; // Radius of the earth in km
-            console.log("start",start);
-            console.log("end",end);
+            //console.log("start",start);
+            //console.log("end",end);
             let dLat = this.deg2rad(parseFloat(end.latitude) - parseFloat(start.latitude));  // deg2rad below
-            console.log("dLat",dLat)
+            //console.log("dLat",dLat)
             let dLon = this.deg2rad(parseFloat(end.longitude) - parseFloat(start.longitude));
-            console.log("dlon",dLon)
+            //console.log("dlon",dLon)
             let a =
                 Math.sin(dLat/2) * Math.sin(dLat/2) +
                 Math.cos(this.deg2rad(parseFloat(end.latitude))) * Math.cos(this.deg2rad(parseFloat(start.latitude))) *
                 Math.sin(dLon/2) * Math.sin(dLon/2)
             ;
-            console.log("a",a)
+//            console.log("a",a)
             let c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-            console.log("c",c)
+            //console.log("c",c)
             distance = (R * c) * 1000; // Distance in km
         }
         return distance.toFixed(2);
     },
     deg2rad(deg) {
-      console.log("deg2rad", deg)
+      //console.log("deg2rad", deg)
         let a = deg * (Math.PI / 180)
-        console.log("deg2rad--", a)
+        //console.log("deg2rad--", a)
         return a;
     },
     enable(){
