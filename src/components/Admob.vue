@@ -14,7 +14,7 @@ export default {
         console.log("Admob::onDeviceReady")
       setTimeout(()=>{
         this.initAds();
-      },500);
+      },300);
     },
     onResume(){
       console.log("Admob::onResume");
@@ -29,19 +29,20 @@ export default {
     initAds(){
         console.log("Admob::initAds");
       var admobid = {}
+      var test = true;
       if (/(android)/i.test(navigator.userAgent)) {  // for android & amazon-fireos
         admobid = {
           banner: 'ca-app-pub-6894711411071006/2975463962',
           interstitial: 'ca-app-pub-6894711411071006/1673467493',
           rewarded: 'ca-app-pub-6894711411071006/2708277172',
-          isTesting: false,
+          isTesting: test,
         }
       } else if (/(ipod|iphone|ipad)/i.test(navigator.userAgent)) {  // for ios
         admobid = {
           banner: 'ca-app-pub-6894711411071006/2975463962',
           interstitial: 'ca-app-pub-6894711411071006/1673467493',
           rewarded: 'ca-app-pub-6894711411071006/2708277172',
-          isTesting: false,
+          isTesting: test,
         }
       }
       if(admob){

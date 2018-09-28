@@ -28,8 +28,6 @@
     <f7-view id="main-view" url="/background" main></f7-view>
     <MyAdmob />
     <AppVersion />
-    
-    
 
   </div>
 </template>
