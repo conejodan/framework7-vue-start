@@ -71,7 +71,9 @@ export default {
         this.cargarFire()
       }
     });
-    window.plugins.OneSignal.setSubscription(true);
+    if(window.plugins.OneSignal){
+      window.plugins.OneSignal.setSubscription(true);
+    }
   },
   methods:{
     ...mapActions(['saveUsuario']),

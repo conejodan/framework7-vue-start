@@ -8,10 +8,10 @@ export default {
     onDeviceReady(){
         console.log("BKM::onDeviceReady")
         setTimeout(()=>{
-            this.bkgEnable()
+            //this.bkgEnable()
         },1000);
         setTimeout(()=>{
-            this.bkgDisable();
+            //this.bkgDisable();
         },10000);
     },
     onResume(){

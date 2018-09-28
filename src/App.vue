@@ -23,11 +23,12 @@
 
     <!-- Main View 
     
-    <BackgroundMode />
+    <BackgroundMode ref="backgroundmode" />
     -->
-    <f7-view id="main-view" url="/" main></f7-view>
+    <f7-view id="main-view" url="/background" main></f7-view>
     <MyAdmob />
     <AppVersion />
+    
     
 
   </div>

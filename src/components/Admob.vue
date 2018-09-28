@@ -4,6 +4,11 @@
 </template>
 <script>
 export default {
+  data() {
+    return {
+
+    }
+  },
   methods: {
     onDeviceReady(){
         console.log("Admob::onDeviceReady")
@@ -14,9 +19,11 @@ export default {
     onResume(){
       console.log("Admob::onResume");
       setTimeout(()=>{
+        if(admob){
+          //admob.interstitial.prepare();
+          //admob.rewardvideo.prepare();
+        }
        //admob.banner.prepare();
-       admob.interstitial.prepare();
-       admob.rewardvideo.prepare();
       },500);
     },
     initAds(){
@@ -37,26 +44,29 @@ export default {
           isTesting: false,
         }
       }
-      admob.banner.config({
-        id: admobid.banner,
-        isTesting: admobid.isTesting,
-        autoShow: true,
-      })
-      admob.banner.prepare();
+      if(admob){
+        admob.banner.config({
+          id: admobid.banner,
+          isTesting: admobid.isTesting,
+          autoShow: true,
+        })
+        admob.banner.prepare();
       //admob.banner.show();
-      admob.interstitial.config({
-        id: admobid.interstitial,
-        isTesting: admobid.isTesting,
-        autoShow: false,
-      })
-      admob.interstitial.prepare()
-      //admob.interstitial.show()
-      admob.rewardvideo.config({
-        id: admobid.rewarded,
-        isTesting: admobid.isTesting,
-        autoShow: false,
-      })
-      admob.rewardvideo.prepare()
+        admob.interstitial.config({
+          id: admobid.interstitial,
+          isTesting: admobid.isTesting,
+          autoShow: true,
+        })
+        admob.interstitial.prepare()
+        //admob.interstitial.show()
+        admob.rewardvideo.config({
+          id: admobid.rewarded,
+          isTesting: admobid.isTesting,
+          autoShow: false,
+        })
+      //admob.rewardvideo.prepare()
+      }
+      
     },
     showInsterstitial(){
       console.log("Admob::showInsterstitial")
