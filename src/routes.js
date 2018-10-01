@@ -17,6 +17,7 @@ import Camara from './pages/camara.vue';
 import Background from './pages/background.vue';
 import OneSignal from './pages/onesignal.vue';
 import ToDo from './pages/ToDoList/dashboard.vue';
+import Avisame from './pages/avisame.vue';
 import NotFoundPage from './pages/not-found.vue';
 
 let router =  [
@@ -95,6 +96,10 @@ let router =  [
   {
     path: '/todo',
     component: ToDo
+  },
+  {
+    path: '/avisame',
+    component: Avisame
   },
   {
     path: '(.*)',
