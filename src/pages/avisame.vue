@@ -89,6 +89,7 @@ export default {
       popupPuntos:false,
       puntos_firebase:null,
       veces:0,
+      posicion_obtenida: false,
       distancia:500,
       destino:null,//{latitude:18.00105,longitude:-92.9494865}
       
@@ -100,6 +101,7 @@ export default {
     this.usuario = auth().currentUser;
     this.syncData();
     setTimeout(()=>{
+      this.getPosition();
       if(cordova){
         cordova.plugins.backgroundMode.on('enable', ()=> { 
           console.log("BGM-EVENT::enable")
@@ -132,13 +134,21 @@ export default {
     },1000)
   },
   methods:{
+    getPosition(){
+      navigator.geolocation.getCurrentPosition((position)=>{
+        this.posicion_obtenida = true;
+      });
+    },
     empezar_rastreo(){
-      this.rastreo_activado = true;
-      this.enable()
-      this.createWatchPosition();
+      if(this.posicion_obtenida){
+        this.rastreo_activado = true;
+        this.enable()
+        this.createWatchPosition();
+      }else{
+        this.getPosition();
+      }
     },
     detener_rastreo(){
-      this.destino = null;
       this.rastreo_activado = false;
       this.clearWatchPosition();
       this.disable();
@@ -177,7 +187,8 @@ export default {
     },
     createWatchPosition(){
       this.watch_position = navigator.geolocation.watchPosition((position)=>{
-              let {latitude, longitude} = position.coords; 
+        if(this.rastreo_activado){
+          let {latitude, longitude} = position.coords; 
               console.log("BGM::Position");
               console.log(latitude);
               console.log(longitude);
@@ -194,7 +205,7 @@ export default {
                   //this.moveForeground()
                 }  
               }
-              
+        }
               }, (error)=>{
                 console.log("Error Watch");
                 console.log(error.message);
