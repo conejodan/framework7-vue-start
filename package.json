@@ -20,6 +20,8 @@
     "postinstall": "npm run copy-fonts"
   },
   "dependencies": {
+    "card.io.cordova.mobilesdk": "^2.1.0",
+    "com.paypal.cordova.mobilesdk": "^3.5.0",
     "cordova-admob-sdk": "^0.18.0",
     "cordova-android": "^7.1.1",
     "cordova-ios": "^4.5.5",
@@ -148,7 +150,8 @@
       "cordova-plugin-splashscreen": {},
       "onesignal-cordova-plugin": {},
       "cordova-plugin-x-socialsharing": {},
-      "cordova-plugin-vibration": {}
+      "cordova-plugin-vibration": {},
+      "com.paypal.cordova.mobilesdk": {}
     }
   }
 }

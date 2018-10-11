@@ -109,6 +109,7 @@
     <plugin name="onesignal-cordova-plugin" spec="^2.4.3" />
     <plugin name="cordova-plugin-x-socialsharing" spec="~5.4.1" />
     <plugin name="cordova-plugin-vibration" spec="~3.1.0" />
+    <plugin name="com.paypal.cordova.mobilesdk" spec="^3.5.0" />
     <engine name="ios" spec="^4.5.5" />
     <engine name="android" spec="^7.1.1" />
 </widget>

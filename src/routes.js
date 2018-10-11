@@ -18,6 +18,7 @@ import Background from './pages/background.vue';
 import OneSignal from './pages/onesignal.vue';
 import ToDo from './pages/ToDoList/dashboard.vue';
 import Avisame from './pages/avisame.vue';
+import Paypal from './pages/paypal.vue';
 import NotFoundPage from './pages/not-found.vue';
 
 let router =  [
@@ -100,6 +101,10 @@ let router =  [
   {
     path: '/avisame',
     component: Avisame
+  },
+  {
+    path: '/paypal',
+    component: Paypal
   },
   {
     path: '(.*)',

@@ -9,6 +9,7 @@
           <f7-block-title>Menu</f7-block-title>
           <f7-list>
             <f7-list-item title="Inicio" link="/inicio" panel-close></f7-list-item>
+            <f7-list-item title="Paypal" link="/paypal" panel-close></f7-list-item>
             <f7-list-item title="Mis Puntos" link="/mapa2" panel-close></f7-list-item>
             <f7-list-item title="Tareas" link="/todo" panel-close></f7-list-item>
             <f7-list-item title="Avisame" link="/avisame" panel-close></f7-list-item>
@@ -27,7 +28,7 @@
     
     <BackgroundMode ref="backgroundmode" />
     -->
-    <f7-view id="main-view" url="/avisame" main></f7-view>
+    <f7-view id="main-view" url="/paypal" main></f7-view>
     <MyAdmob />
     <AppVersion />
 
