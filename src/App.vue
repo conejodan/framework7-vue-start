@@ -9,14 +9,14 @@
           <f7-block-title>Menu</f7-block-title>
           <f7-list>
             <f7-list-item title="Inicio" link="/inicio" panel-close></f7-list-item>
-            <f7-list-item title="Paypal" link="/paypal" panel-close></f7-list-item>
+            <f7-list-item title="Admob" link="/admob" panel-close></f7-list-item>
             <f7-list-item title="Mis Puntos" link="/mapa2" panel-close></f7-list-item>
             <f7-list-item title="Tareas" link="/todo" panel-close></f7-list-item>
             <f7-list-item title="Avisame" link="/avisame" panel-close></f7-list-item>
             <f7-list-item title="Perfil" link="/formulario" panel-close></f7-list-item>
             <f7-list-item title="Entrevista" link="/entrevista" panel-close></f7-list-item>
             <f7-list-item title="Mapa" link="/mapa" panel-close></f7-list-item>
-            
+            <f7-list-item title="Paypal" link="/paypal" panel-close></f7-list-item>
             <f7-list-item title="Camara" link="/camara" panel-close></f7-list-item>
             <f7-list-item title="Background" link="/background" panel-close></f7-list-item>
             <f7-list-item title="OneSignal" link="/onesignal" panel-close></f7-list-item>
@@ -27,10 +27,12 @@
     <!-- Main View 
     
     <BackgroundMode ref="backgroundmode" />
-    -->
-    <f7-view id="main-view" url="/paypal" main></f7-view>
     <MyAdmob />
     <AppVersion />
+    -->
+    <f7-view id="main-view" url="/admob" main></f7-view>
+    
+    
 
   </div>
 </template>
