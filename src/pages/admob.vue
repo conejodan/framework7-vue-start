@@ -16,7 +16,7 @@
     <f7-block inner>
       <f7-row tag="p">
         <f7-col>
-          <f7-button fill @click="initAds">Init Ads</f7-button>
+          <f7-button fill @click="initAds">Init Admod</f7-button>
         </f7-col>
       </f7-row>
       <f7-row tag="p">
@@ -70,6 +70,8 @@ export default {
   data() {
     return {
       title: 'Admob',
+      show_admob: true,
+      testing: true
     };
   },
   methods: {
@@ -77,15 +79,23 @@ export default {
         console.log("Admob::onDeviceReady")
       setTimeout(()=>{
         this.initAds();
-      },200);
+      },300);
     },
     onResume(){
       console.log("Admob::onResume");
     },
+    showAdmob(show){
+      if(show){
+        this.prepareBanner();
+        this.show_admob = true;
+      }else{
+        this.removeBanner();
+      }
+    },
     initAds(){
         console.log("Admob::initAds");
       var admobid = {}
-      var test = true;
+      var test = this.testing;
       if (/(android)/i.test(navigator.userAgent)) {  // for android & amazon-fireos
         admobid = {
           banner: 'ca-app-pub-6894711411071006/2975463962',
@@ -126,12 +136,16 @@ export default {
       
     },
     prepareBanner(){
-      console.log("Admob::prepareBanner")
-      admob.banner.prepare()
+      if(this.show_admob){
+        console.log("Admob::prepareBanner")
+        admob.banner.prepare()
+      }
     },
     showBanner(){
-      console.log("Admob::showBanner")
-      admob.banner.show()
+      if(this.show_admob){
+        console.log("Admob::showBanner")
+        admob.banner.show()
+      }
     },
     hideBanner(){
       console.log("Admob::hideBanner")
@@ -142,20 +156,28 @@ export default {
       admob.banner.remove()
     },
     prepareInsterstitial(){
-      console.log("Admob::prepareInsterstitial")
-      admob.interstitial.prepare()
+      if(this.show_admob){
+        console.log("Admob::prepareInsterstitial")
+        admob.interstitial.prepare()
+      }
     },
     showInsterstitial(){
-      console.log("Admob::showInsterstitial")
-      admob.interstitial.show()
+      if(this.show_admob){
+        console.log("Admob::showInsterstitial")
+        admob.interstitial.show()
+      }
     },
     prepareRewardVideo(){
-      console.log("Admob::prepareRewardVideo")
-      admob.rewardvideo.prepare()
+      if(this.show_admob){
+        console.log("Admob::prepareRewardVideo")
+        admob.rewardvideo.prepare()
+      }
     },
     showRewardVideo(){
-      console.log("Admob::showRewardVideo")
-      admob.rewardvideo.show()
+      if(this.show_admob){
+        console.log("Admob::showRewardVideo")
+        admob.rewardvideo.show()
+      }
     }
   },
   mounted(){
