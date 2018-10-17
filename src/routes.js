@@ -20,6 +20,7 @@ import ToDo from './pages/ToDoList/dashboard.vue';
 import Avisame from './pages/avisame.vue';
 import Paypal from './pages/paypal.vue';
 import Admob from './pages/admob.vue';
+import MyFile from './pages/file.vue';
 import NotFoundPage from './pages/not-found.vue';
 
 let router =  [
@@ -110,6 +111,10 @@ let router =  [
   {
     path: '/admob',
     component: Admob
+  },
+  {
+    path: '/file',
+    component: MyFile
   },
   {
     path: '(.*)',

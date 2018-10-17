@@ -9,6 +9,7 @@
           <f7-block-title>Menu</f7-block-title>
           <f7-list>
             <f7-list-item title="Inicio" link="/inicio" panel-close></f7-list-item>
+            <f7-list-item title="File" link="/file" panel-close></f7-list-item>
             <f7-list-item title="Admob" link="/admob" panel-close></f7-list-item>
             <f7-list-item title="Mis Puntos" link="/mapa2" panel-close></f7-list-item>
             <f7-list-item title="Tareas" link="/todo" panel-close></f7-list-item>
