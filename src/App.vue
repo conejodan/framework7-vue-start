@@ -31,7 +31,7 @@
     <MyAdmob />
     <AppVersion />
     -->
-    <f7-view id="main-view" url="/admob" main></f7-view>
+    <f7-view id="main-view" url="/file" main></f7-view>
     
     
 
